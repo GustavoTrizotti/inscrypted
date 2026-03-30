@@ -19,10 +19,11 @@ public class GameTest {
     void shouldHaveOneSquirrelCardAmongFiveInitialCardsInHand() {
         Game game = new Game();
         game.drawInitialHand();
-        boolean hasOneSquirrel = game.getHand().stream()
+        int squirrels = (int) game.getHand().stream()
                 .map(Card::getTag)
                 .filter("Squirrel"::equals)
-                .count() == 1;
-        assertThat(hasOneSquirrel).isTrue();
+                .count();
+
+        assertThat(squirrels).isEqualTo(1);
     }
 }

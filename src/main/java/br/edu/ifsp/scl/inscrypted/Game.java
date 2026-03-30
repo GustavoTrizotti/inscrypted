@@ -7,8 +7,9 @@ public class Game {
     private final List<Card> cards = new ArrayList<>();
 
     public void drawInitialHand() {
-        for (int i = 0; i < 5; i++) {
-            cards.add(new Card());
+        cards.add(new Card("Squirrel"));
+        for (int i = 0; i < 4; i++) {
+            cards.add(new Card(""));
         }
     }
 
