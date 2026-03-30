@@ -13,4 +13,16 @@ public class GameTest {
         game.drawInitialHand();
         assertThat(game.getHand().size()).isEqualTo(5);
     }
+
+    @Test
+    @DisplayName("Should have one squirrel card among five initial cards in hand")
+    void shouldHaveOneSquirrelCardAmongFiveInitialCardsInHand() {
+        Game game = new Game();
+        game.drawInitialHand();
+        boolean hasOneSquirrel = game.getHand().stream()
+                .map(Card::getTag)
+                .filter("Squirrel"::equals)
+                .count() == 1;
+        assertThat(hasOneSquirrel).isTrue();
+    }
 }
