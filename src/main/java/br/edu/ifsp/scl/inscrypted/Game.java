@@ -1,13 +1,18 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
-    public void drawInitialHand() {
+    private final List<Card> cards = new ArrayList<>();
 
+    public void drawInitialHand() {
+        for (int i = 0; i < 5; i++) {
+            cards.add(new Card());
+        }
     }
 
-    public Collection<Object> getHand() {
-        return null;
+    public List<Card> getHand() {
+        return List.copyOf(cards);
     }
 }
