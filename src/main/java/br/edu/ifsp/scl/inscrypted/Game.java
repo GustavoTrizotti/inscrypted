@@ -43,6 +43,9 @@ public class Game {
             );
         }
 
+        if (card.getCost() == Cost.ZERO)
+            throw new IllegalSacrificeException("Cannot add sacrifices to a zero cost card!");
+
         card.addSacrifice();
         table.remove(sacrificeSlot);
     }
