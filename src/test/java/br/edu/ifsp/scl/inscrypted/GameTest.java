@@ -3,7 +3,6 @@ package br.edu.ifsp.scl.inscrypted;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import java.util.List;
 
@@ -85,5 +84,14 @@ public class GameTest {
         Card card = sut.getHand().getFirst();
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         assertThat(sut.getHand().contains(card)).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should verifiy if a placed card was in players hand before placing")
+    void shouldVerifiyIfAPlacedCardWasInPlayersHandBeforePlacing() {
+        List<Card> hand = sut.getHand();
+        Card card = sut.getHand().getFirst();
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        assertThat(hand.contains(card)).isTrue();
     }
 }
