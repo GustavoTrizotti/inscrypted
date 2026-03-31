@@ -36,6 +36,11 @@ public class Game {
     }
 
     public void sacrifice(Card card, Card sacrificed) {
+        if (getSlotFromCard(sacrificed).isEmpty())
+            throw new IllegalSacrificeException(
+                    "\"%s\" isn't placed on table to be sacrificed!".formatted(sacrificed.getTag())
+            );
+
         card.addSacrifice();
         getSlotFromCard(sacrificed)
                 .ifPresent(table::remove);
