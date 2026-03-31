@@ -104,4 +104,13 @@ public class GameTest {
         sut.sacrifice(card, sacrificed);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
     }
+
+    @Test
+    @DisplayName("Should throw IllegalSacrificeException if trying to sacrifice a card that isn't in table")
+    void shouldThrowIllegalSacrificeExceptionIfTryingToSacrificeACardThatIsntInTable() {
+        Card first = sut.getHand().getFirst();
+        Card fromHand = sut.getHand().get(1);
+        assertThatExceptionOfType(IllegalSacrificeException.class)
+                .isThrownBy(() -> sut.sacrifice(first, fromHand));
+    }
 }
