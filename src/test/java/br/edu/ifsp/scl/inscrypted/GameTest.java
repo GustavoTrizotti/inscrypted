@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -112,5 +113,15 @@ public class GameTest {
         Card first = sut.getHand().getFirst();
         assertThatExceptionOfType(IllegalSacrificeException.class)
                 .isThrownBy(() -> sut.sacrifice(first, TableSlot.FIRST));
+    }
+
+    @Test
+    @DisplayName("Should throw IllegalSacrificeException when adding sacrifices to a zero cost card")
+    void shouldThrowIllegalSacrificeExceptionWhenAddingSacrificesToAZeroCostCard() {
+        Card zeroCostCard = new Card("");
+        Card toSacrifice = new Card("");
+        sut.placeCardAtSlot(toSacrifice, TableSlot.FIRST);
+        assertThatExceptionOfType(IllegalSacrificeException.class)
+                .isThrownBy(() -> sut.sacrifice(zeroCostCard, TableSlot.FIRST));
     }
 }
