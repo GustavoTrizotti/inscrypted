@@ -17,8 +17,16 @@ public class Game {
         return List.copyOf(cards);
     }
 
-    public void placeCardAtSlot(Card squirrel, TableSlot tableSlot) {
-        table.putIfAbsent(tableSlot, squirrel);
+    public void placeCardAtSlot(Card card, TableSlot tableSlot) {
+        Card inSlot = table.get(tableSlot);
+        if (inSlot != null) {
+            throw new IllegalCardPlacementException("The card \"%s\" is already at position \"%s\"!".formatted(
+                    inSlot.getTag(),
+                    tableSlot.name()
+            ));
+        }
+
+        table.putIfAbsent(tableSlot, card);
     }
 
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {

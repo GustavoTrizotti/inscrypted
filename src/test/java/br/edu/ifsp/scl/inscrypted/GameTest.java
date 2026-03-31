@@ -46,12 +46,12 @@ public class GameTest {
     }
 
     @Test
-    @DisplayName("Should throw InvalidCardPlacementException if placing a card in an occupied table position")
-    void shouldThrowInvalidCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition() {
+    @DisplayName("Should throw IllegalCardPlacementException if placing a card in an occupied table position")
+    void shouldThrowIllegalCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition() {
         Card card = new Card("");
         Card toBePlaced = new Card("");
         sut.placeCardAtSlot(card, TableSlot.FIRST);
-        assertThatExceptionOfType(InvalidCardPlacementException.class)
+        assertThatExceptionOfType(IllegalCardPlacementException.class)
                 .isThrownBy(() -> sut.placeCardAtSlot(toBePlaced, TableSlot.FIRST));
     }
 }
