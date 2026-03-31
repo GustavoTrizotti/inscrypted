@@ -72,7 +72,8 @@ public class GameTest {
     void shouldAllowPlaceACardThatCoveredItsSacrificeCostInAFreeTablePosition() {
         Card card = new Card("", Cost.ONE);
         Card sacrificed = new Card("");
-        sut.sacrifice(card, sacrificed);
+        sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
+        sut.sacrifice(card, TableSlot.FIRST);
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         assertThat(card.isCostReached()).isEqualTo(true);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(card);
@@ -101,7 +102,7 @@ public class GameTest {
         Card card = new Card("");
         Card sacrificed = new Card("");
         sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
-        sut.sacrifice(card, sacrificed);
+        sut.sacrifice(card, TableSlot.FIRST);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
     }
 
@@ -109,8 +110,7 @@ public class GameTest {
     @DisplayName("Should throw IllegalSacrificeException if trying to sacrifice a card that isn't in table")
     void shouldThrowIllegalSacrificeExceptionIfTryingToSacrificeACardThatIsntInTable() {
         Card first = sut.getHand().getFirst();
-        Card fromHand = sut.getHand().get(1);
         assertThatExceptionOfType(IllegalSacrificeException.class)
-                .isThrownBy(() -> sut.sacrifice(first, fromHand));
+                .isThrownBy(() -> sut.sacrifice(first, TableSlot.FIRST));
     }
 }

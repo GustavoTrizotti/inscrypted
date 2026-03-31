@@ -35,15 +35,16 @@ public class Game {
         cards.remove(card);
     }
 
-    public void sacrifice(Card card, Card sacrificed) {
-        if (getSlotFromCard(sacrificed).isEmpty())
+    public void sacrifice(Card card, TableSlot sacrificeSlot) {
+        Optional<Card> cardAtSlot = getCardAtSlot(sacrificeSlot);
+        if (cardAtSlot.isEmpty()) {
             throw new IllegalSacrificeException(
-                    "\"%s\" isn't placed on table to be sacrificed!".formatted(sacrificed.getTag())
+                    "Slot \"%s\" hasn't any card to be sacrificed!".formatted(sacrificeSlot.name())
             );
+        }
 
         card.addSacrifice();
-        getSlotFromCard(sacrificed)
-                .ifPresent(table::remove);
+        table.remove(sacrificeSlot);
     }
 
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
