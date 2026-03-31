@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.*;
 
 public class GameTest {
     private Game sut;
@@ -53,5 +54,15 @@ public class GameTest {
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         assertThatExceptionOfType(IllegalCardPlacementException.class)
                 .isThrownBy(() -> sut.placeCardAtSlot(toBePlaced, TableSlot.FIRST));
+    }
+
+    @Test
+    @DisplayName("Should throw IllegalCardPlacementException when placing card without reaching sacrifice cost")
+    void shouldThrowIllegalCardPlacementExceptionWhenPlacingCardWithoutReachingSacrificeCost() {
+        Card card = mock(Card.class);
+        when(card.getCost()).thenReturn(Cost.ONE);
+        assertThat(card.getCost()).isNotEqualTo(Cost.ZERO);
+        assertThatExceptionOfType(IllegalCardPlacementException.class)
+                .isThrownBy(() -> sut.placeCardAtSlot(card, TableSlot.FIRST));
     }
 }
