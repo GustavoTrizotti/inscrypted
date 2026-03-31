@@ -65,4 +65,15 @@ public class GameTest {
         assertThatExceptionOfType(IllegalCardPlacementException.class)
                 .isThrownBy(() -> sut.placeCardAtSlot(card, TableSlot.FIRST));
     }
+
+    @Test
+    @DisplayName("Should allow place a card that covered its sacrifice cost in a free table position")
+    void shouldAllowPlaceACardThatCoveredItsSacrificeCostInAFreeTablePosition() {
+        Card card = new Card("", Cost.ONE);
+        Card sacrificed = new Card("");
+        sut.sacrifice(card, sacrificed);
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        assertThat(card.isCostReached()).isEqualTo(true);
+        assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(card);
+    }
 }
