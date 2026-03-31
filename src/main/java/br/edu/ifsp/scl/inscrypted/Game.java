@@ -32,6 +32,7 @@ public class Game {
             ));
 
         table.putIfAbsent(tableSlot, card);
+        cards.remove(card);
     }
 
     public void sacrifice(Card card, Card sacrificed) {
