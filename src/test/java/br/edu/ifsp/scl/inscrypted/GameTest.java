@@ -3,12 +3,14 @@ package br.edu.ifsp.scl.inscrypted;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class GameTest {
     private Game sut;
@@ -75,5 +77,13 @@ public class GameTest {
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         assertThat(card.isCostReached()).isEqualTo(true);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(card);
+    }
+
+    @Test
+    @DisplayName("Should grant that a placed card is not in player hand after placed")
+    void shouldGrantThatAPlacedCardIsNotInPlayerHandAfterPlaced() {
+        Card card = sut.getHand().getFirst();
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        assertThat(sut.getHand().contains(card)).isFalse();
     }
 }
