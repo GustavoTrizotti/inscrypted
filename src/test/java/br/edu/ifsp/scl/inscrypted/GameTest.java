@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -93,5 +94,15 @@ public class GameTest {
         Card card = sut.getHand().getFirst();
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         assertThat(hand.contains(card)).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should remove a sacrificed card from the table after sacrificing")
+    void shouldRemoveASacrificedCardFromTheTableAfterSacrificing() {
+        Card card = new Card("");
+        Card sacrificed = new Card("");
+        sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
+        sut.sacrifice(card, sacrificed);
+        assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
     }
 }
