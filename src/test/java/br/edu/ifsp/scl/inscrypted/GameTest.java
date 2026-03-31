@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class GameTest {
     private Game sut;
@@ -43,5 +43,15 @@ public class GameTest {
         sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
         assertThat(squirrel.getCost()).isEqualTo(Cost.ZERO);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
+    }
+
+    @Test
+    @DisplayName("Should throw InvalidCardPlacementException if placing a card in an occupied table position")
+    void shouldThrowInvalidCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition() {
+        Card card = new Card("");
+        Card toBePlaced = new Card("");
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        assertThatExceptionOfType(InvalidCardPlacementException.class)
+                .isThrownBy(() -> sut.placeCardAtSlot(toBePlaced, TableSlot.FIRST));
     }
 }
