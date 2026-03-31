@@ -10,4 +10,8 @@ public class Card {
     public String getTag() {
         return tag;
     }
+
+    public Cost getCost() {
+        return Cost.ZERO;
+    }
 }

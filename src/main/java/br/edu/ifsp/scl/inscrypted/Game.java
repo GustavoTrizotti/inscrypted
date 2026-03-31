@@ -1,10 +1,10 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private final List<Card> cards = new ArrayList<>();
+    private final Map<TableSlot, Card> table = new HashMap<>();
 
     public void drawInitialHand() {
         cards.add(new Card("Squirrel"));
@@ -15,5 +15,13 @@ public class Game {
 
     public List<Card> getHand() {
         return List.copyOf(cards);
+    }
+
+    public void placeCardAtSlot(Card squirrel, TableSlot tableSlot) {
+        table.putIfAbsent(tableSlot, squirrel);
+    }
+
+    public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
+        return Optional.ofNullable(table.get(tableSlot));
     }
 }
