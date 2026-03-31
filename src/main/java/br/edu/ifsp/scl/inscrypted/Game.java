@@ -53,11 +53,4 @@ public class Game {
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
         return Optional.ofNullable(table.get(tableSlot));
     }
-
-    private Optional<TableSlot> getSlotFromCard(Card card) {
-        return table.entrySet().stream()
-                .filter(e -> e.getValue().equals(card))
-                .map(Map.Entry::getKey)
-                .findFirst();
-    }
 }
