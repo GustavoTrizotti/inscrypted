@@ -26,7 +26,16 @@ public class Game {
             ));
         }
 
+        if (!card.isCostReached())
+            throw new IllegalCardPlacementException("The card \"%s\" hasn't reached it's sacrifice cost!".formatted(
+                    card.getTag()
+            ));
+
         table.putIfAbsent(tableSlot, card);
+    }
+
+    public void sacrifice(Card card, Card sacrificed) {
+        card.addSacrifice();
     }
 
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
