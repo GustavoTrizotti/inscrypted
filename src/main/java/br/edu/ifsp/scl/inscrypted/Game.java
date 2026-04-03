@@ -67,6 +67,7 @@ public class Game {
     }
 
     public List<Card> getOpponentRow() {
-        return List.of(new Card(""), new Card(""));
+        Collections.shuffle(opponentHand);
+        return opponentHand.subList(0, 1);
     }
 }
