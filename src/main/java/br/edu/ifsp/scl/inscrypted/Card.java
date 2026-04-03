@@ -28,6 +28,6 @@ public class Card {
     }
 
     public Cost getCost() {
-        return Cost.ZERO;
+        return sacrificeCost;
     }
 }

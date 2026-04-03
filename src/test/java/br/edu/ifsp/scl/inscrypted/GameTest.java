@@ -99,7 +99,7 @@ public class GameTest {
     @Test
     @DisplayName("Should remove a sacrificed card from the table after sacrificing")
     void shouldRemoveASacrificedCardFromTheTableAfterSacrificing() {
-        Card card = new Card("");
+        Card card = new Card("", Cost.ONE);
         Card sacrificed = new Card("");
         sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
         sut.sacrifice(card, TableSlot.FIRST);
