@@ -5,7 +5,9 @@ import java.util.*;
 public class Game {
     private final List<Card> cards = new ArrayList<>();
     private final List<Card> opponentHand = new ArrayList<>();
-    private final Map<TableSlot, Card> table = new HashMap<>();
+
+    private final Map<TableSlot, Card> playerRow = new HashMap<>();
+    private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
     public void drawInitialHand() {
         drawToPlayer();
@@ -30,7 +32,7 @@ public class Game {
     }
 
     public void placeCardAtSlot(Card card, TableSlot tableSlot) {
-        Card inSlot = table.get(tableSlot);
+        Card inSlot = playerRow.get(tableSlot);
         if (inSlot != null) {
             throw new IllegalCardPlacementException("The card \"%s\" is already at position \"%s\"!".formatted(
                     inSlot.getTag(),
@@ -43,7 +45,7 @@ public class Game {
                     card.getTag()
             ));
 
-        table.putIfAbsent(tableSlot, card);
+        playerRow.putIfAbsent(tableSlot, card);
         cards.remove(card);
     }
 
@@ -59,24 +61,36 @@ public class Game {
             throw new IllegalSacrificeException("Cannot add sacrifices to a zero cost card!");
 
         card.addSacrifice();
-        table.remove(sacrificeSlot);
+        playerRow.remove(sacrificeSlot);
     }
 
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
-        return Optional.ofNullable(table.get(tableSlot));
+        return Optional.ofNullable(playerRow.get(tableSlot));
     }
 
     public List<Card> getOpponentHand() {
-        return opponentHand;
+        return List.copyOf(opponentHand);
     }
 
     public void placeInitialOpponentCards() {
+        Collections.shuffle(opponentHand);
+        for (int i = 0; i < 2; i++) {
+            Card card = opponentHand.remove(i);
+            TableSlot slot = getSlotAtIndex(i);
+            opponentRow.put(slot, card);
+        }
+    }
 
+    private TableSlot getSlotAtIndex(int index) {
+        if (index == 0) return TableSlot.FIRST;
+        if (index == 1) return TableSlot.SECOND;
+        if (index == 2) return TableSlot.THIRD;
+        if (index == 3) return TableSlot.FOURTH;
+        throw new IllegalArgumentException("Invalid index for table slot!");
     }
 
     public List<Card> getOpponentRow() {
-        Collections.shuffle(opponentHand);
-        return opponentHand.subList(0, 2);
+        return List.copyOf(opponentRow.values());
     }
 
     public List<Card> getPlayerRow() {
