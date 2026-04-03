@@ -66,7 +66,7 @@ public class Game {
 
     }
 
-    public Collection<Object> getOpponentRow() {
-        return null;
+    public List<Card> getOpponentRow() {
+        return List.of(new Card(""), new Card(""));
     }
 }
