@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Game {
     private final List<Card> cards = new ArrayList<>();
+    private final List<Card> opponentHand = new ArrayList<>();
     private final Map<TableSlot, Card> table = new HashMap<>();
 
     public void drawInitialHand() {
@@ -54,7 +55,7 @@ public class Game {
         return Optional.ofNullable(table.get(tableSlot));
     }
 
-    public Object getOpponent() {
-        return "";
+    public List<Card> getOpponentHand() {
+        return opponentHand;
     }
 }
