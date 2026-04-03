@@ -129,4 +129,11 @@ public class GameTest {
     void shouldGrantThatAnOpponentExistsInGameCreation() {
         assertThat(sut.getOpponent()).isNotNull();
     }
+
+    @Test
+    @DisplayName("Should grant that opponent has 5 cards before game starts")
+    void shouldGrantThatOpponentHas5CardsBeforeGameStarts() {
+        Object opponent = sut.getOpponent();
+        assertThat(opponent.getHand().size()).isEqualTo(5);
+    }
 }
