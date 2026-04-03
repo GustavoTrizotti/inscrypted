@@ -80,6 +80,6 @@ public class Game {
     }
 
     public List<Card> getPlayerRow() {
-        return null;
+        return List.of();
     }
 }
