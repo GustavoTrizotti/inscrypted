@@ -160,4 +160,14 @@ public class GameTest {
         List<Card> opponentRow = sut.getOpponentRow();
         assertThat(sut.getPlayerRow().containsAll(opponentRow)).isFalse();
     }
+
+    @Test
+    @DisplayName("Should not allow the opponent to pick a squirrel to be placed in table")
+    void shouldNotAllowTheOpponentToPickASquirrelToBePlacedInTable() {
+        sut.placeInitialOpponentCards();
+        List<Card> opponentRow = sut.getOpponentRow();
+        boolean hasSquirrel = opponentRow.stream()
+                .anyMatch(card -> card.getTag().equalsIgnoreCase("Squirrel"));
+        assertThat(hasSquirrel).isFalse();
+    }
 }
