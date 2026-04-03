@@ -152,4 +152,12 @@ public class GameTest {
         List<Card> opponentRow = sut.getOpponentRow();
         assertThat(opponentHand.containsAll(opponentRow)).isTrue();
     }
+
+    @Test
+    @DisplayName("Should not allow the opponent to place a card in player row")
+    void shouldNotAllowTheOpponentToPlaceACardInPlayerRow() {
+        sut.placeInitialOpponentCards();
+        List<Card> opponentRow = sut.getOpponentRow();
+        assertThat(sut.getPlayerRow().containsAll(opponentRow)).isFalse();
+    }
 }
