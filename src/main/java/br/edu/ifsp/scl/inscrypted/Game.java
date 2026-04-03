@@ -56,6 +56,17 @@ public class Game {
     }
 
     public List<Card> getOpponentHand() {
+        for (int i = 0; i < 5; i++) {
+            opponentHand.add(new Card(""));
+        }
         return opponentHand;
+    }
+
+    public void placeInitialOpponentCards() {
+
+    }
+
+    public Collection<Object> getOpponentRow() {
+        return null;
     }
 }

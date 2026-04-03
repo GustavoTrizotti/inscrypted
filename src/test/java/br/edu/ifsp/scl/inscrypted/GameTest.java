@@ -136,4 +136,11 @@ public class GameTest {
         List<Card> opponentHand = sut.getOpponentHand();
         assertThat(opponentHand.size()).isEqualTo(5);
     }
+
+    @Test
+    @DisplayName("Should grant that two opponent cards have been placed on table in game start")
+    void shouldGrantThatTwoOpponentCardsHaveBeenPlacedOnTableInGameStart() {
+        sut.placeInitialOpponentCards();
+        assertThat(sut.getOpponentRow().size()).isEqualTo(2);
+    }
 }
