@@ -55,6 +55,6 @@ public class Game {
     }
 
     public Object getOpponent() {
-        return null;
+        return "";
     }
 }
