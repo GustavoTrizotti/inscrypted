@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -169,5 +170,12 @@ public class GameTest {
         boolean hasSquirrel = opponentRow.stream()
                 .anyMatch(card -> card.getTag().equalsIgnoreCase("Squirrel"));
         assertThat(hasSquirrel).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should assert that opponent has exactly 3 cards after placing in game start")
+    void shouldAssertThatOpponentHasExactly3CardsAfterPlacingInGameStart() {
+        sut.placeInitialOpponentCards();
+        assertThat(sut.getOpponentHand().size()).isEqualTo(3);
     }
 }
