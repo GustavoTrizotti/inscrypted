@@ -8,9 +8,20 @@ public class Game {
     private final Map<TableSlot, Card> table = new HashMap<>();
 
     public void drawInitialHand() {
+        drawToPlayer();
+        drawToOpponent();
+    }
+
+    private void drawToPlayer() {
         cards.add(new Card("Squirrel"));
         for (int i = 0; i < 4; i++) {
             cards.add(new Card(""));
+        }
+    }
+
+    private void drawToOpponent() {
+        for (int i = 0; i < 5; i++) {
+            opponentHand.add(new Card(""));
         }
     }
 
@@ -56,9 +67,6 @@ public class Game {
     }
 
     public List<Card> getOpponentHand() {
-        for (int i = 0; i < 5; i++) {
-            opponentHand.add(new Card(""));
-        }
         return opponentHand;
     }
 
@@ -68,6 +76,10 @@ public class Game {
 
     public List<Card> getOpponentRow() {
         Collections.shuffle(opponentHand);
-        return opponentHand.subList(0, 1);
+        return opponentHand.subList(0, 2);
+    }
+
+    public List<Card> getPlayerRow() {
+        return null;
     }
 }
