@@ -53,4 +53,8 @@ public class Game {
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
         return Optional.ofNullable(table.get(tableSlot));
     }
+
+    public Object getOpponent() {
+        return null;
+    }
 }

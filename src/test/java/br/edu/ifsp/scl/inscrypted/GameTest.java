@@ -123,4 +123,10 @@ public class GameTest {
         assertThatExceptionOfType(IllegalSacrificeException.class)
                 .isThrownBy(() -> sut.sacrifice(zeroCostCard, TableSlot.FIRST));
     }
+
+    @Test
+    @DisplayName("Should grant that an opponent exists in game creation")
+    void shouldGrantThatAnOpponentExistsInGameCreation() {
+        assertThat(sut.getOpponent()).isNotNull();
+    }
 }
