@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
@@ -186,16 +188,20 @@ public class GameTest {
                 .isThrownBy(() -> sut.ringBell());
     }
 
-    @Test
-    @DisplayName("Should remove opponent's life point when recieving an attack from player's card that has one attack")
-    void shouldRemoveOpponentSLifePointWhenRecievingAnAttackFromPlayerSCardThatHasOneAttack() {
-        Card attacker = new Card("");
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4})
+    @DisplayName("Should remove opponent's life points when receiving an attack from adjacent player card")
+    void shouldRemoveOpponentLifePointsWhenReceivingAnAttackFromAdjacentPlayerCard(int damage) {
+        Card attacker = mock(Card.class);
+        when(attacker.isCostReached()).thenReturn(true);
+        when(attacker.getAttack()).thenReturn(damage);
+
         sut.placeInitialOpponentCards();
         sut.placeCardAtSlot(attacker, TableSlot.FIRST);
         sut.ringBell();
-        assertThat(attacker.getAttack()).isEqualTo(1);
+        assertThat(attacker.getAttack()).isEqualTo(damage);
         assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
-        assertThat(sut.getOpponentLife()).isEqualTo(-1);
+        assertThat(sut.getOpponentLife()).isEqualTo(damage * -1);
     }
 
     @Nested
