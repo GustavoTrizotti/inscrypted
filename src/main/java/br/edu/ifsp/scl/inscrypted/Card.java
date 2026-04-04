@@ -30,4 +30,8 @@ public class Card {
     public Cost getCost() {
         return sacrificeCost;
     }
+
+    public int getAttack() {
+        return 0;
+    }
 }

@@ -193,6 +193,7 @@ public class GameTest {
         sut.placeInitialOpponentCards();
         sut.placeCardAtSlot(attacker, TableSlot.FIRST);
         sut.ringBell();
+        assertThat(attacker.getAttack()).isEqualTo(1);
         assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
         assertThat(sut.getOpponentLife()).isEqualTo(-1);
     }
