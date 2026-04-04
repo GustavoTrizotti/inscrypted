@@ -90,7 +90,11 @@ public class Game {
             if (opponentCardAtSlot.isEmpty()) {
                 opponentLife -= card.getDamage();
             } else {
-                opponentCardAtSlot.get().reduceLifeBy(card.getDamage());
+                Card opponentCard = opponentCardAtSlot.get();
+                opponentCard.reduceLifeBy(card.getDamage());
+                if (opponentCard.getLife() == 0) {
+                    opponentRow.remove(slot);
+                }
             }
         });
 
@@ -99,7 +103,11 @@ public class Game {
             if (cardAtSlot.isEmpty()) {
                 playerLife -= card.getDamage();
             } else {
-                cardAtSlot.get().reduceLifeBy(card.getDamage());
+                Card opposingCard = cardAtSlot.get();
+                opposingCard.reduceLifeBy(card.getDamage());
+                if (opposingCard.getLife() == 0) {
+                    playerRow.remove(slot);
+                }
             }
         });
     }
