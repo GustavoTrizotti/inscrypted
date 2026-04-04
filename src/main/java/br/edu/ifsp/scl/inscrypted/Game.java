@@ -82,24 +82,30 @@ public class Game {
     }
 
     public void ringBell() {
-        if (getHand().isEmpty() || getOpponentRow().isEmpty())
+        if (getHand().isEmpty())
             throw new IllegalStateException("Cannot ring the bell before game starts");
 
         playerRow.forEach((slot, card) -> {
-            if (getOpponentCardAtSlot(slot).isEmpty()) {
-                opponentLife -= card.getAttack();
+            Optional<Card> opponentCardAtSlot = getOpponentCardAtSlot(slot);
+            if (opponentCardAtSlot.isEmpty()) {
+                opponentLife -= card.getDamage();
+            } else {
+                opponentCardAtSlot.get().reduceLifeBy(card.getDamage());
             }
         });
 
         opponentRow.forEach((slot, card) -> {
-            if (getCardAtSlot(slot).isEmpty()) {
-                playerLife -= card.getAttack();
+            Optional<Card> cardAtSlot = getCardAtSlot(slot);
+            if (cardAtSlot.isEmpty()) {
+                playerLife -= card.getDamage();
+            } else {
+                cardAtSlot.get().reduceLifeBy(card.getDamage());
             }
         });
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
-        return Optional.empty();
+        return Optional.ofNullable(opponentRow.get(tableSlot));
     }
 
     public int getOpponentLife() {

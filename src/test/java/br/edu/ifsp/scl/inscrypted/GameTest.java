@@ -151,37 +151,25 @@ public class GameTest {
         assertThat(hasSquirrel).isFalse();
     }
 
-    @Test
-    @DisplayName("Should not allow player to ring the bell before game places two initial opponent's card")
-    void shouldNotAllowPlayerToRingTheBellBeforeGamePlacesTwoInitialOpponentCard() {
-        assertThat(sut.getOpponentRow().isEmpty()).isTrue();
-        assertThatExceptionOfType(IllegalStateException.class)
-                .isThrownBy(() -> sut.ringBell());
-    }
-
-    @ParameterizedTest
+    @ParameterizedTest(name = "For {0} of damage")
     @ValueSource(ints = {1, 2, 3, 4})
-    @DisplayName("Should remove opponent's life points when receiving an attack from adjacent player card")
+    @DisplayName("Should remove opponent's life points when receiving an attack from opposing player card")
     void shouldRemoveOpponentLifePointsWhenReceivingAnAttackFromAdjacentPlayerCard(int damage) {
-        Card attacker = mock(Card.class);
-        when(attacker.isCostReached()).thenReturn(true);
-        when(attacker.getAttack()).thenReturn(damage);
+        Card attacker = new Card("", 1, damage);
 
-        sut.placeInitialOpponentCards();
         sut.placeCardAtSlot(attacker, TableSlot.FIRST);
         sut.ringBell();
-        assertThat(attacker.getAttack()).isEqualTo(damage);
-        assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
+        assertThat(attacker.getDamage()).isEqualTo(damage);
         assertThat(sut.getOpponentLife()).isEqualTo(damage * -1);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "For {0} of damage")
     @ValueSource(ints = {1, 2, 3, 4})
     @DisplayName("Should remove player's life points when receiving an attack from adjacent opponent card")
     void shouldRemovePlayerLifePointsWhenReceivingAnAttackFromAdjacentOpponentCard(int damage) {
         Card opponentCard = mock(Card.class);
 
-        when(opponentCard.getAttack()).thenReturn(damage);
+        when(opponentCard.getDamage()).thenReturn(damage);
         sut.placeOpponentCardAtSlot(opponentCard, TableSlot.FIRST);
 
         sut.ringBell();
@@ -192,12 +180,8 @@ public class GameTest {
     @Test
     @DisplayName("Should reduce card life after beign attacked by opposing card")
     void shouldReduceCardLifeAfterBeignAttackedByOpposingCard() {
-        Card attacked = mock(Card.class);
-        Card card = mock(Card.class);
-        when(card.getAttack()).thenReturn(1);
-        when(card.isCostReached()).thenReturn(true);
-
-        when(attacked.getLife()).thenReturn(1);
+        Card card = new Card("");
+        Card attacked = new Card("");
 
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);

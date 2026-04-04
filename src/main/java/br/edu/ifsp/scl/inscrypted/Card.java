@@ -3,11 +3,18 @@ package br.edu.ifsp.scl.inscrypted;
 public class Card {
     private final String tag;
     private final Cost sacrificeCost;
+    private int damage;
     private int sacrifices;
+    private int life;
 
     public Card(String tag) {
-        this.tag = tag;
-        this.sacrificeCost = Cost.ZERO;
+        this(tag, 1, 1);
+    }
+
+    public Card(String tag, int lifePoints, int damage) {
+        this(tag, Cost.ZERO);
+        this.damage = damage;
+        this.life = lifePoints;
     }
 
     public Card(String tag, Cost sacrificeCost) {
@@ -31,11 +38,15 @@ public class Card {
         return sacrificeCost;
     }
 
-    public int getAttack() {
-        return 1;
+    public int getDamage() {
+        return damage;
     }
 
     public int getLife() {
-        return 0;
+        return life;
+    }
+
+    public void reduceLifeBy(int attack) {
+        life -= attack;
     }
 }
