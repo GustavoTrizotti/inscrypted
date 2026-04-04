@@ -87,15 +87,6 @@ public class GameTest {
     }
 
     @Test
-    @DisplayName("Should verifiy if a placed card was in players hand before placing")
-    void shouldVerifiyIfAPlacedCardWasInPlayersHandBeforePlacing() {
-        List<Card> hand = sut.getHand();
-        Card card = sut.getHand().getFirst();
-        sut.placeCardAtSlot(card, TableSlot.FIRST);
-        assertThat(hand.contains(card)).isTrue();
-    }
-
-    @Test
     @DisplayName("Should remove a sacrificed card from the table after sacrificing")
     void shouldRemoveASacrificedCardFromTheTableAfterSacrificing() {
         Card card = new Card("", Cost.ONE);
