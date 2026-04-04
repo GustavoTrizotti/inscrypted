@@ -3,23 +3,23 @@ package br.edu.ifsp.scl.inscrypted;
 public class Card {
     private final String tag;
     private final Cost sacrificeCost;
-    private int damage;
+    private final int damage;
     private int sacrifices;
     private int life;
 
-    public Card(String tag) {
-        this(tag, 1, 1);
-    }
-
-    public Card(String tag, int lifePoints, int damage) {
-        this(tag, Cost.ZERO);
-        this.damage = damage;
-        this.life = lifePoints;
-    }
-
-    public Card(String tag, Cost sacrificeCost) {
+    public Card(String tag, Cost sacrificeCost, int damage, int life) {
         this.tag = tag;
         this.sacrificeCost = sacrificeCost;
+        this.damage = damage;
+        this.life = life;
+    }
+
+    public static Card identity(Cost sacrificeCost) {
+        return new Card("Dummy", sacrificeCost, 1, 1);
+    }
+
+    public static Card createSquirrel() {
+        return new Card("Squirrel", Cost.ZERO, 0, 0);
     }
 
     public boolean isCostReached() {

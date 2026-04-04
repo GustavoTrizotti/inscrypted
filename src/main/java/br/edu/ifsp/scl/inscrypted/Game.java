@@ -15,9 +15,9 @@ public class Game {
     }
 
     private void drawToPlayer() {
-        cards.add(new Card("Squirrel"));
+        cards.add(Card.createSquirrel());
         for (int i = 0; i < 4; i++) {
-            cards.add(new Card(""));
+            cards.add(Card.identity(Cost.ZERO));
         }
     }
 
@@ -67,8 +67,8 @@ public class Game {
     }
 
     public void placeInitialOpponentCards() {
-        Card first = new Card("");
-        Card second = new Card("");
+        Card first = Card.identity(Cost.ZERO);
+        Card second = Card.identity(Cost.ZERO);
         placeOpponentCardAtSlot(first, TableSlot.FIRST);
         placeOpponentCardAtSlot(second, TableSlot.SECOND);
     }

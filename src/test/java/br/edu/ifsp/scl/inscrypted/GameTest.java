@@ -40,7 +40,7 @@ public class GameTest {
     @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
-        List<Card> hand = List.of(new Card("Squirrel"));
+        List<Card> hand = List.of(Card.createSquirrel());
         Card squirrel = hand.getFirst();
         sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
         assertThat(squirrel.getCost()).isEqualTo(Cost.ZERO);
@@ -50,8 +50,8 @@ public class GameTest {
     @Test
     @DisplayName("Should throw IllegalCardPlacementException if placing a card in an occupied table position")
     void shouldThrowIllegalCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition() {
-        Card card = new Card("");
-        Card toBePlaced = new Card("");
+        Card card = Card.identity(Cost.ZERO);
+        Card toBePlaced = Card.identity(Cost.ZERO);
         sut.placeCardAtSlot(card, TableSlot.FIRST);
         assertThatExceptionOfType(IllegalCardPlacementException.class)
                 .isThrownBy(() -> sut.placeCardAtSlot(toBePlaced, TableSlot.FIRST));
@@ -60,7 +60,7 @@ public class GameTest {
     @Test
     @DisplayName("Should throw IllegalCardPlacementException when placing card without reaching sacrifice cost")
     void shouldThrowIllegalCardPlacementExceptionWhenPlacingCardWithoutReachingSacrificeCost() {
-        Card card = new Card("Dummy", Cost.ONE);
+        Card card = Card.identity(Cost.ONE);
 
         assertThatExceptionOfType(IllegalCardPlacementException.class)
                 .isThrownBy(() -> sut.placeCardAtSlot(card, TableSlot.FIRST));
@@ -69,8 +69,8 @@ public class GameTest {
     @Test
     @DisplayName("Should allow place a card that covered its sacrifice cost in a free table position")
     void shouldAllowPlaceACardThatCoveredItsSacrificeCostInAFreeTablePosition() {
-        Card card = new Card("", Cost.ONE);
-        Card sacrificed = new Card("");
+        Card card = Card.identity(Cost.ONE);
+        Card sacrificed = Card.identity(Cost.ZERO);
         sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
         sut.sacrifice(card, TableSlot.FIRST);
         sut.placeCardAtSlot(card, TableSlot.FIRST);
@@ -89,8 +89,8 @@ public class GameTest {
     @Test
     @DisplayName("Should remove a sacrificed card from the table after sacrificing")
     void shouldRemoveASacrificedCardFromTheTableAfterSacrificing() {
-        Card card = new Card("", Cost.ONE);
-        Card sacrificed = new Card("");
+        Card card = Card.identity(Cost.ONE);
+        Card sacrificed = Card.identity(Cost.ZERO);
         sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
         sut.sacrifice(card, TableSlot.FIRST);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
@@ -107,8 +107,8 @@ public class GameTest {
     @Test
     @DisplayName("Should throw IllegalSacrificeException when adding sacrifices to a zero cost card")
     void shouldThrowIllegalSacrificeExceptionWhenAddingSacrificesToAZeroCostCard() {
-        Card zeroCostCard = new Card("");
-        Card toSacrifice = new Card("");
+        Card zeroCostCard = Card.identity(Cost.ZERO);
+        Card toSacrifice = Card.identity(Cost.ZERO);
         sut.placeCardAtSlot(toSacrifice, TableSlot.FIRST);
         assertThatExceptionOfType(IllegalSacrificeException.class)
                 .isThrownBy(() -> sut.sacrifice(zeroCostCard, TableSlot.FIRST));
@@ -143,7 +143,7 @@ public class GameTest {
     @ValueSource(ints = {1, 2, 3, 4})
     @DisplayName("Should remove opponent's life points when receiving an attack from opposing player card")
     void shouldRemoveOpponentLifePointsWhenReceivingAnAttackFromAdjacentPlayerCard(int damage) {
-        Card attacker = new Card("", 1, damage);
+        Card attacker = new Card("Dummy", Cost.ZERO, damage, 1);
 
         sut.placeCardAtSlot(attacker, TableSlot.FIRST);
         sut.ringBell();
@@ -155,7 +155,7 @@ public class GameTest {
     @ValueSource(ints = {1, 2, 3, 4})
     @DisplayName("Should remove player's life points when receiving an attack from adjacent opponent card")
     void shouldRemovePlayerLifePointsWhenReceivingAnAttackFromAdjacentOpponentCard(int damage) {
-        Card opponentCard = new Card("", 1, damage);
+        Card opponentCard = new Card("Dummy", Cost.ZERO, damage, 1);
 
         sut.placeOpponentCardAtSlot(opponentCard, TableSlot.FIRST);
         sut.ringBell();
@@ -167,8 +167,8 @@ public class GameTest {
     @Test
     @DisplayName("Should reduce card life after beign attacked by opposing card")
     void shouldReduceCardLifeAfterBeignAttackedByOpposingCard() {
-        Card card = new Card("");
-        Card attacked = new Card("");
+        Card card = Card.identity(Cost.ZERO);
+        Card attacked = Card.identity(Cost.ZERO);
         placeOpposingCardsAndRingBell(card, attacked);
 
         assertThat(attacked.getLife()).isEqualTo(0);
@@ -177,8 +177,8 @@ public class GameTest {
     @Test
     @DisplayName("Should remove card that reached zero life points after ringing the bell")
     void shouldRemoveCardThatReachedZeroLifePointsAfterRingingTheBell() {
-        Card card = new Card("");
-        Card attacked = new Card("");
+        Card card = Card.identity(Cost.ZERO);
+        Card attacked = Card.identity(Cost.ZERO);
         placeOpposingCardsAndRingBell(card, attacked);
 
         assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
