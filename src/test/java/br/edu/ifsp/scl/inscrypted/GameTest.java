@@ -10,8 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class GameTest {
     private Game sut;
@@ -62,9 +60,8 @@ public class GameTest {
     @Test
     @DisplayName("Should throw IllegalCardPlacementException when placing card without reaching sacrifice cost")
     void shouldThrowIllegalCardPlacementExceptionWhenPlacingCardWithoutReachingSacrificeCost() {
-        Card card = mock(Card.class);
-        when(card.getCost()).thenReturn(Cost.ONE);
-        assertThat(card.getCost()).isNotEqualTo(Cost.ZERO);
+        Card card = new Card("Dummy", Cost.ONE);
+
         assertThatExceptionOfType(IllegalCardPlacementException.class)
                 .isThrownBy(() -> sut.placeCardAtSlot(card, TableSlot.FIRST));
     }
@@ -167,9 +164,8 @@ public class GameTest {
     @ValueSource(ints = {1, 2, 3, 4})
     @DisplayName("Should remove player's life points when receiving an attack from adjacent opponent card")
     void shouldRemovePlayerLifePointsWhenReceivingAnAttackFromAdjacentOpponentCard(int damage) {
-        Card opponentCard = mock(Card.class);
+        Card opponentCard = new Card("", 1, damage);
 
-        when(opponentCard.getDamage()).thenReturn(damage);
         sut.placeOpponentCardAtSlot(opponentCard, TableSlot.FIRST);
         sut.ringBell();
 
