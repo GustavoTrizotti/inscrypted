@@ -32,6 +32,6 @@ public class Card {
     }
 
     public int getAttack() {
-        return 0;
+        return 1;
     }
 }
