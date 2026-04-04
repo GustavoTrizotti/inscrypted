@@ -1,9 +1,6 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -127,32 +124,10 @@ public class GameTest {
     }
 
     @Test
-    @DisplayName("Should grant that an opponent exists in game creation")
-    void shouldGrantThatAnOpponentExistsInGameCreation() {
-        assertThat(sut.getOpponentHand()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("Should grant that opponent has 5 cards before game starts")
-    void shouldGrantThatOpponentHas5CardsBeforeGameStarts() {
-        List<Card> opponentHand = sut.getOpponentHand();
-        assertThat(opponentHand.size()).isEqualTo(5);
-    }
-
-    @Test
     @DisplayName("Should grant that two opponent cards have been placed on table in game start")
     void shouldGrantThatTwoOpponentCardsHaveBeenPlacedOnTableInGameStart() {
         sut.placeInitialOpponentCards();
         assertThat(sut.getOpponentRow().size()).isEqualTo(2);
-    }
-
-    @Test
-    @DisplayName("Should grant that the two opponent cards were in his hand before placing")
-    void shouldGrantThatTheTwoOpponentCardsWereInHisHandBeforePlacing() {
-        List<Card> opponentHand = sut.getOpponentHand();
-        sut.placeInitialOpponentCards();
-        List<Card> opponentRow = sut.getOpponentRow();
-        assertThat(opponentHand.containsAll(opponentRow)).isTrue();
     }
 
     @Test
@@ -171,13 +146,6 @@ public class GameTest {
         boolean hasSquirrel = opponentRow.stream()
                 .anyMatch(card -> card.getTag().equalsIgnoreCase("Squirrel"));
         assertThat(hasSquirrel).isFalse();
-    }
-
-    @Test
-    @DisplayName("Should assert that opponent has exactly 3 cards after placing in game start")
-    void shouldAssertThatOpponentHasExactly3CardsAfterPlacingInGameStart() {
-        sut.placeInitialOpponentCards();
-        assertThat(sut.getOpponentHand().size()).isEqualTo(3);
     }
 
     @Test

@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Game {
     private final List<Card> cards = new ArrayList<>();
-    private final List<Card> opponentHand = new ArrayList<>();
 
     private final Map<TableSlot, Card> playerRow = new HashMap<>();
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
@@ -13,19 +12,12 @@ public class Game {
 
     public void drawInitialHand() {
         drawToPlayer();
-        drawToOpponent();
     }
 
     private void drawToPlayer() {
         cards.add(new Card("Squirrel"));
         for (int i = 0; i < 4; i++) {
             cards.add(new Card(""));
-        }
-    }
-
-    private void drawToOpponent() {
-        for (int i = 0; i < 5; i++) {
-            opponentHand.add(new Card(""));
         }
     }
 
@@ -74,17 +66,11 @@ public class Game {
         return Optional.ofNullable(playerRow.get(tableSlot));
     }
 
-    public List<Card> getOpponentHand() {
-        return List.copyOf(opponentHand);
-    }
-
     public void placeInitialOpponentCards() {
-        Collections.shuffle(opponentHand);
-        for (int i = 0; i < 2; i++) {
-            Card card = opponentHand.remove(i);
-            TableSlot slot = getSlotAtIndex(i);
-            opponentRow.put(slot, card);
-        }
+        Card first = new Card("");
+        Card second = new Card("");
+        placeOpponentCardAtSlot(first, TableSlot.FIRST);
+        placeOpponentCardAtSlot(second, TableSlot.SECOND);
     }
 
     private TableSlot getSlotAtIndex(int index) {
