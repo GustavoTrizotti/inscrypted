@@ -1,6 +1,9 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -187,9 +190,10 @@ public class GameTest {
     @DisplayName("Should remove opponent's life point when recieving an attack from player's card that has one attack")
     void shouldRemoveOpponentSLifePointWhenRecievingAnAttackFromPlayerSCardThatHasOneAttack() {
         Card attacker = new Card("");
+        sut.placeInitialOpponentCards();
         sut.placeCardAtSlot(attacker, TableSlot.FIRST);
         sut.ringBell();
-        assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isNull();
+        assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
         assertThat(sut.getOpponentLife()).isEqualTo(-1);
     }
 
