@@ -9,6 +9,8 @@ public class Game {
     private final Map<TableSlot, Card> playerRow = new HashMap<>();
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
+    private int opponentLife;
+
     public void drawInitialHand() {
         drawToPlayer();
         drawToOpponent();
@@ -100,6 +102,12 @@ public class Game {
     public void ringBell() {
         if (getHand().isEmpty() || getOpponentRow().isEmpty())
             throw new IllegalStateException("Cannot ring the bell before game starts");
+
+        playerRow.forEach((slot, card) -> {
+            if (getOpponentCardAtSlot(slot).isEmpty()) {
+                opponentLife -= card.getAttack();
+            }
+        });
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
@@ -107,6 +115,6 @@ public class Game {
     }
 
     public int getOpponentLife() {
-        return -1;
+        return opponentLife;
     }
 }
