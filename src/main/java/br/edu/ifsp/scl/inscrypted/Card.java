@@ -34,4 +34,8 @@ public class Card {
     public int getAttack() {
         return 1;
     }
+
+    public int getLife() {
+        return 0;
+    }
 }

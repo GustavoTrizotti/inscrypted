@@ -1,6 +1,9 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -184,6 +187,23 @@ public class GameTest {
         sut.ringBell();
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
         assertThat(sut.getPlayerLife()).isEqualTo(damage * -1);
+    }
+
+    @Test
+    @DisplayName("Should reduce card life after beign attacked by opposing card")
+    void shouldReduceCardLifeAfterBeignAttackedByOpposingCard() {
+        Card attacked = mock(Card.class);
+        Card card = mock(Card.class);
+        when(card.getAttack()).thenReturn(1);
+        when(card.isCostReached()).thenReturn(true);
+
+        when(attacked.getLife()).thenReturn(1);
+
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);
+        sut.ringBell();
+
+        assertThat(attacked.getLife()).isEqualTo(0);
     }
 
     @Nested
