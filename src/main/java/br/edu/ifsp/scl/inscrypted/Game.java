@@ -99,7 +99,7 @@ public class Game {
 
     public void ringBell() {
         if (getHand().isEmpty() || getOpponentRow().isEmpty())
-            throw new IllegalArgumentException("Cannot ring the bell before game starts");
+            throw new IllegalStateException("Cannot ring the bell before game starts");
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
@@ -107,6 +107,6 @@ public class Game {
     }
 
     public int getOpponentLife() {
-        return 0;
+        return -1;
     }
 }
