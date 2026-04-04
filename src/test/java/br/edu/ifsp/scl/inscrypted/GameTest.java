@@ -171,8 +171,8 @@ public class GameTest {
 
         when(opponentCard.getDamage()).thenReturn(damage);
         sut.placeOpponentCardAtSlot(opponentCard, TableSlot.FIRST);
-
         sut.ringBell();
+
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
         assertThat(sut.getPlayerLife()).isEqualTo(damage * -1);
     }
@@ -182,10 +182,7 @@ public class GameTest {
     void shouldReduceCardLifeAfterBeignAttackedByOpposingCard() {
         Card card = new Card("");
         Card attacked = new Card("");
-
-        sut.placeCardAtSlot(card, TableSlot.FIRST);
-        sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);
-        sut.ringBell();
+        placeOpposingCardsAndRingBell(card, attacked);
 
         assertThat(attacked.getLife()).isEqualTo(0);
     }
@@ -195,10 +192,7 @@ public class GameTest {
     void shouldRemoveCardThatReachedZeroLifePointsAfterRingingTheBell() {
         Card card = new Card("");
         Card attacked = new Card("");
-
-        sut.placeCardAtSlot(card, TableSlot.FIRST);
-        sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);
-        sut.ringBell();
+        placeOpposingCardsAndRingBell(card, attacked);
 
         assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
     }
@@ -219,5 +213,15 @@ public class GameTest {
             assertThat(sut.getHand().size()).isEqualTo(0);
             assertThatIllegalStateException().isThrownBy(() -> sut.ringBell());
         }
+    }
+
+    private void placeOpposingCardsAndRingBell(Card card, Card attacked) {
+        placeOpposingCards(card, attacked);
+        sut.ringBell();
+    }
+
+    private void placeOpposingCards(Card card, Card attacked) {
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);
     }
 }
