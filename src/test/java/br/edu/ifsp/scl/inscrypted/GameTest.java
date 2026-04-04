@@ -2,12 +2,12 @@ package br.edu.ifsp.scl.inscrypted;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -177,4 +177,23 @@ public class GameTest {
         sut.placeInitialOpponentCards();
         assertThat(sut.getOpponentHand().size()).isEqualTo(3);
     }
+
+    @Nested
+    @DisplayName("Before drawing cards to initial hand tests")
+    class BeforeDrawingInitialHandTests {
+        private Game sut;
+
+        @BeforeEach
+        void setup() {
+            sut = new Game();
+        }
+
+        @Test
+        @DisplayName("Should not allow the player to ring the bell before drawing the initial 5 cards")
+        void shouldNotAllowThePlayerToRingTheBellBeforeDrawingTheInitial5Cards() {
+            assertThat(sut.getHand().size()).isEqualTo(0);
+            assertThatIllegalStateException().isThrownBy(() -> sut.ringBell());
+        }
+    }
+
 }

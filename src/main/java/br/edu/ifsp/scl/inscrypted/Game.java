@@ -96,4 +96,7 @@ public class Game {
     public List<Card> getPlayerRow() {
         return List.of();
     }
+
+    public void ringBell() {
+    }
 }
