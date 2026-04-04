@@ -100,4 +100,12 @@ public class Game {
     public void ringBell() {
         throw new IllegalStateException();
     }
+
+    public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
+        return Optional.empty();
+    }
+
+    public int getOpponentLife() {
+        return 0;
+    }
 }

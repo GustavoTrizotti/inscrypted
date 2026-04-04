@@ -1,9 +1,6 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -184,6 +181,16 @@ public class GameTest {
         assertThat(sut.getOpponentRow().isEmpty()).isTrue();
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> sut.ringBell());
+    }
+
+    @Test
+    @DisplayName("Should remove opponent's life point when recieving an attack from player's card that has one attack")
+    void shouldRemoveOpponentSLifePointWhenRecievingAnAttackFromPlayerSCardThatHasOneAttack() {
+        Card attacker = new Card("");
+        sut.placeCardAtSlot(attacker, TableSlot.FIRST);
+        sut.ringBell();
+        assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isNull();
+        assertThat(sut.getOpponentLife()).isEqualTo(-1);
     }
 
     @Nested
