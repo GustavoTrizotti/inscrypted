@@ -190,6 +190,19 @@ public class GameTest {
         assertThat(attacked.getLife()).isEqualTo(0);
     }
 
+    @Test
+    @DisplayName("Should remove card that reached zero life points after ringing the bell")
+    void shouldRemoveCardThatReachedZeroLifePointsAfterRingingTheBell() {
+        Card card = new Card("");
+        Card attacked = new Card("");
+
+        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);
+        sut.ringBell();
+
+        assertThat(sut.getOpponentCardAtSlot(TableSlot.FIRST)).isEmpty();
+    }
+
     @Nested
     @DisplayName("Before drawing cards to initial hand tests")
     class BeforeDrawingInitialHandTests {
