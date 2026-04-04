@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -209,16 +208,12 @@ public class GameTest {
     @ValueSource(ints = {1, 2, 3, 4})
     @DisplayName("Should remove player's life points when receiving an attack from adjacent opponent card")
     void shouldRemovePlayerLifePointsWhenReceivingAnAttackFromAdjacentOpponentCard(int damage) {
-        Game sut = mock(Game.class);
         Card opponentCard = mock(Card.class);
 
-        when(sut.getOpponentCardAtSlot(TableSlot.FIRST))
-                .thenReturn(Optional.of(opponentCard));
         when(opponentCard.getAttack()).thenReturn(damage);
+        sut.placeOpponentCardAtSlot(opponentCard, TableSlot.FIRST);
 
-        sut.placeInitialOpponentCards();
         sut.ringBell();
-        assertThat(opponentCard.getAttack()).isEqualTo(damage);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
         assertThat(sut.getPlayerLife()).isEqualTo(damage * -1);
     }

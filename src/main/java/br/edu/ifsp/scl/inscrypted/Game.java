@@ -9,7 +9,7 @@ public class Game {
     private final Map<TableSlot, Card> playerRow = new HashMap<>();
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
-    private int opponentLife;
+    private int playerLife, opponentLife;
 
     public void drawInitialHand() {
         drawToPlayer();
@@ -49,6 +49,10 @@ public class Game {
 
         playerRow.putIfAbsent(tableSlot, card);
         cards.remove(card);
+    }
+
+    void placeOpponentCardAtSlot(Card card, TableSlot slot) {
+        opponentRow.put(slot, card);
     }
 
     public void sacrifice(Card card, TableSlot sacrificeSlot) {
@@ -108,6 +112,12 @@ public class Game {
                 opponentLife -= card.getAttack();
             }
         });
+
+        opponentRow.forEach((slot, card) -> {
+            if (getCardAtSlot(slot).isEmpty()) {
+                playerLife -= card.getAttack();
+            }
+        });
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
@@ -119,6 +129,6 @@ public class Game {
     }
 
     public int getPlayerLife() {
-        return 0;
+        return playerLife;
     }
 }
