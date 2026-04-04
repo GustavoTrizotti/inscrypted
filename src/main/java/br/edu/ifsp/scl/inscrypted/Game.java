@@ -98,5 +98,6 @@ public class Game {
     }
 
     public void ringBell() {
+        throw new IllegalStateException();
     }
 }

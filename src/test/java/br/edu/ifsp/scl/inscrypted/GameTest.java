@@ -178,6 +178,14 @@ public class GameTest {
         assertThat(sut.getOpponentHand().size()).isEqualTo(3);
     }
 
+    @Test
+    @DisplayName("Should not allow player to ring the bell before game places two initial opponent's card")
+    void shouldNotAllowPlayerToRingTheBellBeforeGamePlacesTwoInitialOpponentCard() {
+        assertThat(sut.getOpponentRow().isEmpty()).isTrue();
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> sut.ringBell());
+    }
+
     @Nested
     @DisplayName("Before drawing cards to initial hand tests")
     class BeforeDrawingInitialHandTests {
@@ -195,5 +203,4 @@ public class GameTest {
             assertThatIllegalStateException().isThrownBy(() -> sut.ringBell());
         }
     }
-
 }
