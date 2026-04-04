@@ -117,4 +117,8 @@ public class Game {
     public int getOpponentLife() {
         return opponentLife;
     }
+
+    public int getPlayerLife() {
+        return 0;
+    }
 }
