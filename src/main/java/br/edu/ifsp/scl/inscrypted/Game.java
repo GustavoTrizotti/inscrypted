@@ -73,14 +73,6 @@ public class Game {
         placeOpponentCardAtSlot(second, TableSlot.SECOND);
     }
 
-    private TableSlot getSlotAtIndex(int index) {
-        if (index == 0) return TableSlot.FIRST;
-        if (index == 1) return TableSlot.SECOND;
-        if (index == 2) return TableSlot.THIRD;
-        if (index == 3) return TableSlot.FOURTH;
-        throw new IllegalArgumentException("Invalid index for table slot!");
-    }
-
     public List<Card> getOpponentRow() {
         return List.copyOf(opponentRow.values());
     }
