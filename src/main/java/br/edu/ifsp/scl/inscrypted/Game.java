@@ -78,7 +78,7 @@ public class Game {
     }
 
     public List<Card> getPlayerRow() {
-        return List.of();
+        return List.copyOf(playerRow.values());
     }
 
     public void ringBell() {
@@ -92,7 +92,7 @@ public class Game {
             } else {
                 Card opponentCard = opponentCardAtSlot.get();
                 opponentCard.reduceLifeBy(card.getDamage());
-                if (opponentCard.getLife() == 0) {
+                if (opponentCard.getLife() <= 0) {
                     opponentRow.remove(slot);
                 }
             }
@@ -105,7 +105,7 @@ public class Game {
             } else {
                 Card opposingCard = cardAtSlot.get();
                 opposingCard.reduceLifeBy(card.getDamage());
-                if (opposingCard.getLife() == 0) {
+                if (opposingCard.getLife() <= 0) {
                     playerRow.remove(slot);
                 }
             }

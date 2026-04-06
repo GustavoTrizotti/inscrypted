@@ -49,4 +49,16 @@ public class Card {
     public void reduceLifeBy(int attack) {
         life -= attack;
     }
+
+    @Override
+    public String toString() {
+        return """
+                ┌──────────────────┐
+                │ %-16s │
+                │ Cost: %-10d │
+                │ Dmg:  %-10d │
+                │ HP:   %-10d │
+                └──────────────────┘
+                """.formatted(tag, sacrificeCost.getCost(), damage, life);
+    }
 }
