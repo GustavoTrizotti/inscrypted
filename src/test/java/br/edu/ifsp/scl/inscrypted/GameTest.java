@@ -39,6 +39,13 @@ public class GameTest {
     }
 
     @Test
+    @DisplayName("Should mark a card as current selected card when selecting it")
+    void shouldMarkACardAsCurrentSelectedCardWhenSelectingIt() {
+        sut.select(0);
+        assertThat(sut.getSelectedCard()).hasValue(sut.getHand().getFirst());
+    }
+
+    @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
         Card squirrel = Card.createSquirrel();

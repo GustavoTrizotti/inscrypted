@@ -129,4 +129,11 @@ public class Game {
     public int getPlayerLife() {
         return playerLife;
     }
+
+    public void select(int cardIndex) {
+    }
+
+    public Optional<Card> getSelectedCard() {
+        return Optional.empty();
+    }
 }
