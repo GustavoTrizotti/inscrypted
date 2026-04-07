@@ -134,6 +134,6 @@ public class Game {
     }
 
     public Optional<Card> getSelectedCard() {
-        return Optional.empty();
+        return Optional.ofNullable(hand.getCards().getFirst());
     }
 }
