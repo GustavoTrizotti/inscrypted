@@ -11,6 +11,7 @@ public class Game {
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
     private int playerLife, opponentLife;
+    private Card selectedCard;
 
     public Game(Hand hand) {
         this.hand = hand;
@@ -131,9 +132,10 @@ public class Game {
     }
 
     public void select(int cardIndex) {
+        selectedCard = hand.getCards().get(cardIndex);
     }
 
     public Optional<Card> getSelectedCard() {
-        return Optional.ofNullable(hand.getCards().getFirst());
+        return Optional.ofNullable(selectedCard);
     }
 }
