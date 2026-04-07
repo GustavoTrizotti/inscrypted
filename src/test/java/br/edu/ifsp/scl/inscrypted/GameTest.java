@@ -46,6 +46,15 @@ public class GameTest {
     }
 
     @Test
+    @DisplayName("Should replace the previous card when selecting different card from previous")
+    void shouldReplaceThePreviousCardWhenSelectingDifferentCardFromPrevious() {
+        sut.select(0);
+        Card firstSelected = sut.getSelectedCard().get();
+        sut.select(1);
+        assertThat(sut.getSelectedCard().get()).isNotEqualTo(firstSelected);
+    }
+
+    @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
         Card squirrel = Card.createSquirrel();
