@@ -5,7 +5,8 @@ import java.util.Optional;
 
 public class Main {
     static void main() {
-        Game game = new Game();
+        Hand hand = new Hand();
+        Game game = new Game(hand);
         game.drawInitialHand();
 
         showHand(game);

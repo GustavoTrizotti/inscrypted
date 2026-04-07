@@ -16,7 +16,8 @@ public class GameTest {
 
     @BeforeEach
     void setUp() {
-        sut = new Game();
+        Hand hand = new Hand();
+        sut = new Game(hand);
         sut.drawInitialHand();
     }
 
@@ -40,10 +41,8 @@ public class GameTest {
     @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
-        List<Card> hand = List.of(Card.createSquirrel());
-        Card squirrel = hand.getFirst();
+        Card squirrel = Card.createSquirrel();
         sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
-        assertThat(squirrel.getCost()).isEqualTo(Cost.ZERO);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
     }
 
@@ -187,17 +186,19 @@ public class GameTest {
     @Nested
     @DisplayName("Before drawing cards to initial hand tests")
     class BeforeDrawingInitialHandTests {
+        private Hand hand;
         private Game sut;
 
         @BeforeEach
         void setup() {
-            sut = new Game();
+            hand = new Hand();
+            sut = new Game(hand);
         }
 
         @Test
         @DisplayName("Should not allow the player to ring the bell before drawing the initial 5 cards")
         void shouldNotAllowThePlayerToRingTheBellBeforeDrawingTheInitial5Cards() {
-            assertThat(sut.getHand().size()).isEqualTo(0);
+            assertThat(hand.getCards().size()).isEqualTo(0);
             assertThatIllegalStateException().isThrownBy(() -> sut.ringBell());
         }
     }

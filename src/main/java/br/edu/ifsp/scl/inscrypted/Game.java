@@ -1,28 +1,34 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class Game {
-    private final List<Card> cards = new ArrayList<>();
-
+    private final Hand hand;
     private final Map<TableSlot, Card> playerRow = new HashMap<>();
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
     private int playerLife, opponentLife;
+
+    public Game(Hand hand) {
+        this.hand = hand;
+    }
 
     public void drawInitialHand() {
         drawToPlayer();
     }
 
     private void drawToPlayer() {
-        cards.add(Card.createSquirrel());
+        hand.draw(Card.createSquirrel());
         for (int i = 0; i < 4; i++) {
-            cards.add(Card.identity(Cost.ZERO));
+            hand.draw(Card.identity(Cost.ZERO));
         }
     }
 
     public List<Card> getHand() {
-        return List.copyOf(cards);
+        return hand.getCards();
     }
 
     public void placeCardAtSlot(Card card, TableSlot tableSlot) {
@@ -40,7 +46,7 @@ public class Game {
             ));
 
         playerRow.putIfAbsent(tableSlot, card);
-        cards.remove(card);
+        hand.remove(card);
     }
 
     void placeOpponentCardAtSlot(Card card, TableSlot slot) {
@@ -82,7 +88,7 @@ public class Game {
     }
 
     public void ringBell() {
-        if (getHand().isEmpty())
+        if (hand.getCards().isEmpty())
             throw new IllegalStateException("Cannot ring the bell before game starts");
 
         playerRow.forEach((slot, card) -> {
