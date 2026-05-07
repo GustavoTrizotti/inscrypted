@@ -138,4 +138,8 @@ public class Game {
     public Optional<Card> getSelectedCard() {
         return Optional.ofNullable(selectedCard);
     }
+
+    public void placeCard(TableSlot slot) {
+
+    }
 }

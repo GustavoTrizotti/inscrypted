@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
@@ -59,6 +60,15 @@ public class GameTest {
     void shouldThrowIndexOutOfBoundsExceptionIfPlayerSelectsCardFromInalidIndex() {
         assertThatIndexOutOfBoundsException()
                 .isThrownBy(() -> sut.select(sut.getHand().size()));
+    }
+
+    @ParameterizedTest(name = "For {0} table slot")
+    @EnumSource(TableSlot.class)
+    @DisplayName("Should throw NoCardSelectedException when trying to place the selected card in any slot")
+    void shouldThrowNoCardSelectedExceptionWhenTryingToPlaceTheSelectedCardInAnySlot(TableSlot slot) {
+        assertThatExceptionOfType(NoCardSelectedException.class)
+                .isThrownBy(() -> sut.placeCard(slot));
+        assertThat(sut.getSelectedCard()).isEmpty();
     }
 
     @Test
