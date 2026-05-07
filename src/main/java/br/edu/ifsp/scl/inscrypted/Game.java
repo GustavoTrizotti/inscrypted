@@ -13,7 +13,7 @@ public class Game {
     private int playerLife, opponentLife;
     private Card selectedCard;
 
-    public Game(Hand hand) {
+    Game(Hand hand) {
         this.hand = hand;
     }
 
