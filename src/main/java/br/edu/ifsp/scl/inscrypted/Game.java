@@ -140,6 +140,9 @@ public class Game {
     }
 
     public void placeCard(TableSlot slot) {
-        throw new NoCardSelectedException("No card selected to place!");
+        if (selectedCard == null)
+            throw new NoCardSelectedException("No card selected to place!");
+
+        placeCardAtSlot(selectedCard, slot);
     }
 }
