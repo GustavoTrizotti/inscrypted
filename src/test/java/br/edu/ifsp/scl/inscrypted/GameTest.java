@@ -55,6 +55,13 @@ public class GameTest {
     }
 
     @Test
+    @DisplayName("Should throw IndexOutOfBoundsException if player selects card from inalid index")
+    void shouldThrowIndexOutOfBoundsExceptionIfPlayerSelectsCardFromInalidIndex() {
+        assertThatIndexOutOfBoundsException()
+                .isThrownBy(() -> sut.select(sut.getHand().size()));
+    }
+
+    @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
         Card squirrel = Card.createSquirrel();
