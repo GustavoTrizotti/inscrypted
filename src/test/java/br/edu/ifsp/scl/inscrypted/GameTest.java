@@ -74,7 +74,13 @@ public class GameTest {
     @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
-        Card squirrel = Card.createSquirrel();
+        Hand hand = new Hand();
+        Card squirrel = new Card("Squirrel", Cost.ZERO, 0, 0);
+        hand.draw(squirrel);
+
+        Game sut = new Game(hand);
+
+        sut.select(0);
         sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
     }
