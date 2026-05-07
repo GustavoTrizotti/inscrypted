@@ -74,13 +74,11 @@ public class GameTest {
     @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
-        Hand hand = new Hand();
         Card squirrel = new Card("Squirrel", Cost.ZERO, 0, 0);
-        hand.draw(squirrel);
-
-        Game sut = new Game(hand);
+        Game sut = createGameWithOneCard(squirrel);
 
         sut.select(0);
+
         sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
     }
@@ -240,6 +238,12 @@ public class GameTest {
             assertThat(hand.getCards().size()).isEqualTo(0);
             assertThatIllegalStateException().isThrownBy(() -> sut.ringBell());
         }
+    }
+
+    private static Game createGameWithOneCard(Card card) {
+        Hand hand = new Hand();
+        hand.draw(card);
+        return new Game(hand);
     }
 
     private void placeOpposingCardsAndRingBell(Card card, Card attacked) {
