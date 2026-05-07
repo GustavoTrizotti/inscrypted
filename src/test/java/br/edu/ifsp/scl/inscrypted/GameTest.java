@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -83,14 +84,21 @@ public class GameTest {
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
     }
 
-    @Test
+    @ParameterizedTest(name = "For {0} table slot")
+    @EnumSource(TableSlot.class)
     @DisplayName("Should throw IllegalCardPlacementException if placing a card in an occupied table position")
-    void shouldThrowIllegalCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition() {
+    void shouldThrowIllegalCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition(TableSlot slot) {
         Card card = Card.identity(Cost.ZERO);
         Card toBePlaced = Card.identity(Cost.ZERO);
-        sut.placeCardAtSlot(card, TableSlot.FIRST);
+
+        Game sut = createGameWithCards(card, toBePlaced);
+
+        sut.select(sut.getHand().indexOf(card));
+        sut.placeCard(slot);
+
+        sut.select(sut.getHand().indexOf(toBePlaced));
         assertThatExceptionOfType(IllegalCardPlacementException.class)
-                .isThrownBy(() -> sut.placeCardAtSlot(toBePlaced, TableSlot.FIRST));
+                .isThrownBy(() -> sut.placeCard(slot));
     }
 
     @Test
@@ -243,6 +251,12 @@ public class GameTest {
     private static Game createGameWithOneCard(Card card) {
         Hand hand = new Hand();
         hand.draw(card);
+        return new Game(hand);
+    }
+
+    private static Game createGameWithCards(Card... cards) {
+        Hand hand = new Hand();
+        Arrays.stream(cards).forEach(hand::draw);
         return new Game(hand);
     }
 
