@@ -42,7 +42,7 @@ public class Game {
         }
 
         if (!card.isCostReached())
-            throw new IllegalCardPlacementException("The card \"%s\" hasn't reached it's sacrifice cost!".formatted(
+            throw new UnsatisfiedSacrificeException("The card \"%s\" hasn't reached it's sacrifice cost!".formatted(
                     card.getTag()
             ));
 
