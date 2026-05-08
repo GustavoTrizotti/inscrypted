@@ -102,12 +102,14 @@ public class GameTest {
     }
 
     @Test
-    @DisplayName("Should throw IllegalCardPlacementException when placing card without reaching sacrifice cost")
-    void shouldThrowIllegalCardPlacementExceptionWhenPlacingCardWithoutReachingSacrificeCost() {
+    @DisplayName("Should throw UnsatisfiedSacrificeException when placing card without reaching sacrifice cost")
+    void shouldThrowUnsatisfiedSacrificeExceptionWhenPlacingCardWithoutReachingSacrificeCost() {
         Card card = Card.identity(Cost.ONE);
+        Game sut = createGameWithOneCard(card);
+        sut.select(0);
 
-        assertThatExceptionOfType(IllegalCardPlacementException.class)
-                .isThrownBy(() -> sut.placeCardAtSlot(card, TableSlot.FIRST));
+        assertThatExceptionOfType(UnsatisfiedSacrificeException.class)
+                .isThrownBy(() -> sut.placeCard(TableSlot.FIRST));
     }
 
     @Test
