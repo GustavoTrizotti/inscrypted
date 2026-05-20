@@ -1,9 +1,6 @@
 package br.edu.ifsp.scl.inscrypted;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -86,6 +83,20 @@ public class GameTest {
 
         assertThat(sut.getSelectedCard()).hasValue(card);
         assertThat(sut.isSacrificeMode()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should cancel sacrifice mode when changing the selected card")
+    void shouldCancelSacrificeModeWhenChangingTheSelectedCard() {
+        Card squirrel = Card.createSquirrel();
+        Card costly = Card.identity(Cost.ONE);
+
+        Game sut = createGameWithCards(squirrel, costly);
+        sut.select(1);
+        sut.select(0);
+
+        assertThat(sut.getSelectedCard()).hasValue(squirrel);
+        assertThat(sut.isSacrificeMode()).isFalse();
     }
 
     @ParameterizedTest(name = "For {0} table slot")
