@@ -55,7 +55,10 @@ public class Game {
         opponentRow.put(slot, card);
     }
 
-    public void sacrifice(Card card, TableSlot sacrificeSlot) {
+    public void sacrifice(TableSlot sacrificeSlot) {
+        Card selectedCard = getSelectedCard()
+                .orElseThrow(() -> new IllegalSacrificeException("No cards selected to add sacrifices!"));
+
         Optional<Card> cardAtSlot = getCardAtSlot(sacrificeSlot);
         if (cardAtSlot.isEmpty()) {
             throw new IllegalSacrificeException(
@@ -63,10 +66,10 @@ public class Game {
             );
         }
 
-        if (card.getCost() == Cost.ZERO)
+        if (selectedCard.getCost() == Cost.ZERO)
             throw new IllegalSacrificeException("Cannot add sacrifices to a zero cost card!");
 
-        card.addSacrifice();
+        selectedCard.addSacrifice();
         playerRow.remove(sacrificeSlot);
     }
 

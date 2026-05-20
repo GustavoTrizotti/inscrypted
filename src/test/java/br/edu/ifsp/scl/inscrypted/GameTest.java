@@ -148,7 +148,7 @@ public class GameTest {
         sut.placeCard(TableSlot.FIRST);
 
         sut.select(0);
-        sut.sacrifice(sut.getSelectedCard().get(), TableSlot.FIRST);
+        sut.sacrifice(TableSlot.FIRST);
         sut.placeCard(TableSlot.FIRST);
 
         assertThat(card.isCostReached()).isEqualTo(true);
@@ -168,17 +168,24 @@ public class GameTest {
     void shouldRemoveASacrificedCardFromTheTableAfterSacrificing() {
         Card card = Card.identity(Cost.ONE);
         Card sacrificed = Card.identity(Cost.ZERO);
-        sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
-        sut.sacrifice(card, TableSlot.FIRST);
+        Game sut = createGameWithCards(sacrificed, card);
+
+        sut.select(0);
+        sut.placeCard(TableSlot.FIRST);
+
+        sut.select(0);
+        sut.sacrifice(TableSlot.FIRST);
+
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).isEmpty();
     }
 
     @Test
     @DisplayName("Should throw IllegalSacrificeException if trying to sacrifice a card that isn't in table")
     void shouldThrowIllegalSacrificeExceptionIfTryingToSacrificeACardThatIsntInTable() {
-        Card first = sut.getHand().getFirst();
+        sut.select(0);
+
         assertThatExceptionOfType(IllegalSacrificeException.class)
-                .isThrownBy(() -> sut.sacrifice(first, TableSlot.FIRST));
+                .isThrownBy(() -> sut.sacrifice(TableSlot.FIRST));
     }
 
     @Test
@@ -186,9 +193,14 @@ public class GameTest {
     void shouldThrowIllegalSacrificeExceptionWhenAddingSacrificesToAZeroCostCard() {
         Card zeroCostCard = Card.identity(Cost.ZERO);
         Card toSacrifice = Card.identity(Cost.ZERO);
-        sut.placeCardAtSlot(toSacrifice, TableSlot.FIRST);
+        Game sut = createGameWithCards(toSacrifice, zeroCostCard);
+
+        sut.select(0);
+        sut.placeCard(TableSlot.FIRST);
+
+        sut.select(0);
         assertThatExceptionOfType(IllegalSacrificeException.class)
-                .isThrownBy(() -> sut.sacrifice(zeroCostCard, TableSlot.FIRST));
+                .isThrownBy(() -> sut.sacrifice(TableSlot.FIRST));
     }
 
     @Test
