@@ -141,9 +141,16 @@ public class GameTest {
     void shouldAllowPlaceACardThatCoveredItsSacrificeCostInAFreeTablePosition() {
         Card card = Card.identity(Cost.ONE);
         Card sacrificed = Card.identity(Cost.ZERO);
-        sut.placeCardAtSlot(sacrificed, TableSlot.FIRST);
-        sut.sacrifice(card, TableSlot.FIRST);
-        sut.placeCardAtSlot(card, TableSlot.FIRST);
+
+        Game sut = createGameWithCards(sacrificed, card);
+
+        sut.select(0);
+        sut.placeCard(TableSlot.FIRST);
+
+        sut.select(0);
+        sut.sacrifice(sut.getSelectedCard().get(), TableSlot.FIRST);
+        sut.placeCard(TableSlot.FIRST);
+
         assertThat(card.isCostReached()).isEqualTo(true);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(card);
     }
