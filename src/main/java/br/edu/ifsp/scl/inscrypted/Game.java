@@ -11,6 +11,7 @@ public class Game {
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
     private int playerLife, opponentLife;
+    private boolean sacrificeMode = false;
     private Card selectedCard;
 
     Game(Hand hand) {
@@ -133,6 +134,7 @@ public class Game {
 
     public void select(int cardIndex) {
         selectedCard = hand.getCards().get(cardIndex);
+        sacrificeMode = selectedCard.getCost() != Cost.ZERO;
     }
 
     public Optional<Card> getSelectedCard() {
@@ -147,6 +149,6 @@ public class Game {
     }
 
     public boolean isSacrificeMode() {
-        return true;
+        return sacrificeMode;
     }
 }
