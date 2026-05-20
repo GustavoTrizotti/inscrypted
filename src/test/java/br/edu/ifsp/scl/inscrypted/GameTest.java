@@ -63,15 +63,6 @@ public class GameTest {
                 .isThrownBy(() -> sut.select(sut.getHand().size()));
     }
 
-    @ParameterizedTest(name = "For {0} table slot")
-    @EnumSource(TableSlot.class)
-    @DisplayName("Should throw NoCardSelectedException when trying to place the selected card in any slot")
-    void shouldThrowNoCardSelectedExceptionWhenTryingToPlaceTheSelectedCardInAnySlot(TableSlot slot) {
-        assertThatExceptionOfType(NoCardSelectedException.class)
-                .isThrownBy(() -> sut.placeCard(slot));
-        assertThat(sut.getSelectedCard()).isEmpty();
-    }
-
     @Test
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
@@ -82,6 +73,28 @@ public class GameTest {
 
         sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
+    }
+
+    @ParameterizedTest(name = "For cost \"{0}\"")
+    @EnumSource(value = Cost.class, names = {"ZERO"}, mode = EnumSource.Mode.EXCLUDE)
+    @DisplayName("Should prepare sacrifice mode when selecting card with one or more sacrifice cost")
+    void shouldPrepareSacrificeModeWhenSelectingCardWithOneOrMoreSacrificeCost(Cost cost) {
+        Card card = Card.identity(cost);
+        Game sut = createGameWithOneCard(card);
+
+        sut.select(0);
+
+        assertThat(sut.getSelectedCard()).hasValue(card);
+        assertThat(sut.isSacrificeMode()).isTrue();
+    }
+
+    @ParameterizedTest(name = "For {0} table slot")
+    @EnumSource(TableSlot.class)
+    @DisplayName("Should throw NoCardSelectedException when trying to place the selected card before selecting in any slot")
+    void shouldThrowNoCardSelectedExceptionWhenTryingToPlaceTheSelectedCardBeforeSelectingInAnySlot(TableSlot slot) {
+        assertThatExceptionOfType(NoCardSelectedException.class)
+                .isThrownBy(() -> sut.placeCard(slot));
+        assertThat(sut.getSelectedCard()).isEmpty();
     }
 
     @ParameterizedTest(name = "For {0} table slot")

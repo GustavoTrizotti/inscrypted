@@ -145,4 +145,8 @@ public class Game {
 
         placeCardAtSlot(selectedCard, slot);
     }
+
+    public boolean isSacrificeMode() {
+        return true;
+    }
 }
