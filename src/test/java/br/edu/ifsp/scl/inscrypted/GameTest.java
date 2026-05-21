@@ -268,13 +268,14 @@ public class GameTest {
         Card card = Card.identity(Cost.ZERO);
         Card attacked = Card.identity(Cost.ZERO);
 
-        Game sut = createGameWithOneCard(attacked);
+        Game sut = createGameWithOneCard(card);
         sut.drawInitialHand();
 
         sut.select(0);
         sut.placeCard(TableSlot.FIRST);
 
-        sut.placeOpponentCardAtSlot(card, TableSlot.FIRST);
+        sut.placeOpponentCardAtSlot(attacked, TableSlot.FIRST);
+
         sut.ringBell();
 
         assertThat(attacked.getLife()).isEqualTo(0);
