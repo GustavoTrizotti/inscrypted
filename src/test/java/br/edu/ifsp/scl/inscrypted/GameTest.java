@@ -68,7 +68,7 @@ public class GameTest {
 
         sut.select(0);
 
-        sut.placeCardAtSlot(squirrel, TableSlot.FIRST);
+        sut.placeCard(TableSlot.FIRST);
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
     }
 
@@ -159,7 +159,11 @@ public class GameTest {
     @DisplayName("Should grant that a placed card is not in player hand after placed")
     void shouldGrantThatAPlacedCardIsNotInPlayerHandAfterPlaced() {
         Card card = sut.getHand().getFirst();
-        sut.placeCardAtSlot(card, TableSlot.FIRST);
+        sut.select(0);
+
+        sut.placeCard(TableSlot.FIRST);
+
+        assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(card);
         assertThat(sut.getHand().contains(card)).isFalse();
     }
 
@@ -233,9 +237,14 @@ public class GameTest {
     @DisplayName("Should remove opponent's life points when receiving an attack from opposing player card")
     void shouldRemoveOpponentLifePointsWhenReceivingAnAttackFromAdjacentPlayerCard(int damage) {
         Card attacker = new Card("Dummy", Cost.ZERO, damage, 1);
+        Game sut = createGameWithOneCard(attacker);
+        sut.drawInitialHand();
 
-        sut.placeCardAtSlot(attacker, TableSlot.FIRST);
+        sut.select(0);
+        sut.placeCard(TableSlot.FIRST);
+
         sut.ringBell();
+
         assertThat(attacker.getDamage()).isEqualTo(damage);
         assertThat(sut.getOpponentLife()).isEqualTo(damage * -1);
     }
@@ -258,7 +267,15 @@ public class GameTest {
     void shouldReduceCardLifeAfterBeignAttackedByOpposingCard() {
         Card card = Card.identity(Cost.ZERO);
         Card attacked = Card.identity(Cost.ZERO);
-        placeOpposingCardsAndRingBell(card, attacked);
+
+        Game sut = createGameWithOneCard(attacked);
+        sut.drawInitialHand();
+
+        sut.select(0);
+        sut.placeCard(TableSlot.FIRST);
+
+        sut.placeOpponentCardAtSlot(card, TableSlot.FIRST);
+        sut.ringBell();
 
         assertThat(attacked.getLife()).isEqualTo(0);
     }
