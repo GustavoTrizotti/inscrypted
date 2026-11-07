@@ -12,9 +12,17 @@ public class Game {
     private boolean sacrificeMode = false;
     private Card selectedCard;
 
+    public Game() {
+        this(new Hand());
+    }
+
     Game(Hand hand) {
         this.hand = hand;
         this.table = new Table();
+    }
+
+    public void draw(Card card) {
+        hand.draw(card);
     }
 
     public void drawInitialHand() {

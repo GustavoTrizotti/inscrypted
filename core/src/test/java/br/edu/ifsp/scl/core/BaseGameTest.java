@@ -9,21 +9,20 @@ public class BaseGameTest {
 
     @BeforeEach
     void setUp() {
-        Hand hand = new Hand();
-        sut = new Game(hand);
+        sut = new Game();
         sut.drawInitialHand();
     }
 
     protected static Game createGameWithOneCard(Card card) {
-        Hand hand = new Hand();
-        hand.draw(card);
-        return new Game(hand);
+        var sut = new Game();
+        sut.draw(card);
+        return sut;
     }
 
     protected static Game createGameWithCards(Card... cards) {
-        Hand hand = new Hand();
-        Arrays.stream(cards).forEach(hand::draw);
-        return new Game(hand);
+        var sut = new Game();
+        Arrays.stream(cards).forEach(sut::draw);
+        return sut;
     }
 
     protected void placeOpposingCardsAndRingBell(Card card, Card attacked) {

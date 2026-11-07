@@ -6,6 +6,8 @@ public final class Table {
     private final Map<TableSlot, Card> playerRow = new HashMap<>();
     private final Map<TableSlot, Card> opponentRow = new HashMap<>();
 
+    Table() {}
+
     Optional<Card> getPlayerCardAtSlot(TableSlot slot) {
         return Optional.ofNullable(playerRow.get(slot));
     }
