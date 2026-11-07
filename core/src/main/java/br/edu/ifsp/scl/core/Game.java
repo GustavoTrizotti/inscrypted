@@ -1,14 +1,11 @@
 package br.edu.ifsp.scl.core;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class Game {
     private final Hand hand;
-    private final Map<TableSlot, Card> playerRow = new HashMap<>();
-    private final Map<TableSlot, Card> opponentRow = new HashMap<>();
+    private final Table table;
 
     private int playerLife, opponentLife;
     private boolean sacrificeMode = false;
@@ -16,6 +13,7 @@ public class Game {
 
     Game(Hand hand) {
         this.hand = hand;
+        this.table = new Table();
     }
 
     public void drawInitialHand() {
@@ -34,10 +32,11 @@ public class Game {
     }
 
     public void placeCardAtSlot(Card card, TableSlot tableSlot) {
-        Card inSlot = playerRow.get(tableSlot);
-        if (inSlot != null) {
+        var inSlot = table.getPlayerCardAtSlot(tableSlot);
+
+        if (inSlot.isPresent()) {
             throw new IllegalCardPlacementException("The card \"%s\" is already at position \"%s\"!".formatted(
-                    inSlot.getTag(),
+                    inSlot.get().getTag(),
                     tableSlot.name()
             ));
         }
@@ -47,12 +46,12 @@ public class Game {
                     card.getTag()
             ));
 
-        playerRow.putIfAbsent(tableSlot, card);
+        table.insertCardAtSlot(tableSlot, card);
         hand.remove(card);
     }
 
     void placeOpponentCardAtSlot(Card card, TableSlot slot) {
-        opponentRow.put(slot, card);
+        table.insertOpponentCardAtSlot(slot, card);
     }
 
     public void sacrifice(TableSlot sacrificeSlot) {
@@ -70,61 +69,81 @@ public class Game {
             throw new IllegalSacrificeException("Cannot add sacrifices to a zero cost card!");
 
         selectedCard.addSacrifice();
-        playerRow.remove(sacrificeSlot);
+        table.removeCardAtSlot(sacrificeSlot);
     }
 
     public Optional<Card> getCardAtSlot(TableSlot tableSlot) {
-        return Optional.ofNullable(playerRow.get(tableSlot));
+        return table.getPlayerCardAtSlot(tableSlot);
     }
 
     public void placeInitialOpponentCards() {
         Card first = Card.identity(Cost.ZERO);
         Card second = Card.identity(Cost.ZERO);
-        placeOpponentCardAtSlot(first, TableSlot.FIRST);
-        placeOpponentCardAtSlot(second, TableSlot.SECOND);
+        table.insertOpponentCardAtSlot(TableSlot.FIRST, first);
+        table.insertOpponentCardAtSlot(TableSlot.SECOND, second);
     }
 
     public List<Card> getOpponentRow() {
-        return List.copyOf(opponentRow.values());
+        return table.getOpponentRow();
     }
 
     public List<Card> getPlayerRow() {
-        return List.copyOf(playerRow.values());
+        return table.getPlayerRow();
+    }
+
+    private void calculateDamagePerSlot(TableSlot slot, boolean isCalculatingForOpponent) {
+        var attackingCard = table.getPlayerCardAtSlot(slot);
+        var opposingCard = table.getOpponentCardAtSlot(slot);
+
+        if (isCalculatingForOpponent) {
+            attackingCard = table.getOpponentCardAtSlot(slot);
+            opposingCard = table.getPlayerCardAtSlot(slot);
+        }
+
+        if (attackingCard.isEmpty()) return;
+
+        final Card attacker = attackingCard.get();
+
+        if (opposingCard.isEmpty() && isCalculatingForOpponent) {
+            playerLife -= attacker.getDamage();
+            return;
+        }
+
+        if (opposingCard.isEmpty()) {
+            opponentLife -= attacker.getDamage();
+            return;
+        }
+
+        opposingCard.get().reduceLifeBy(attacker.getDamage());
+        if (opposingCard.get().getLife() > 0) return;
+        if (isCalculatingForOpponent) {
+            table.removeCardAtSlot(slot);
+            return;
+        }
+        table.removeOpponentCardAtSlot(slot);
+    }
+
+    private void calculatePlayerDamagePerSlot(TableSlot slot) {
+        calculateDamagePerSlot(slot, false);
+    }
+
+    private void calculateOpponentDamagePerSlot(TableSlot slot) {
+        calculateDamagePerSlot(slot, true);
     }
 
     public void ringBell() {
         if (hand.getCards().isEmpty())
             throw new IllegalStateException("Cannot ring the bell before game starts");
 
-        playerRow.forEach((slot, card) -> {
-            Optional<Card> opponentCardAtSlot = getOpponentCardAtSlot(slot);
-            if (opponentCardAtSlot.isEmpty()) {
-                opponentLife -= card.getDamage();
-            } else {
-                Card opponentCard = opponentCardAtSlot.get();
-                opponentCard.reduceLifeBy(card.getDamage());
-                if (opponentCard.getLife() <= 0) {
-                    opponentRow.remove(slot);
-                }
-            }
-        });
+        table.getTableSlots()
+                .forEach(this::calculatePlayerDamagePerSlot);
 
-        opponentRow.forEach((slot, card) -> {
-            Optional<Card> cardAtSlot = getCardAtSlot(slot);
-            if (cardAtSlot.isEmpty()) {
-                playerLife -= card.getDamage();
-            } else {
-                Card opposingCard = cardAtSlot.get();
-                opposingCard.reduceLifeBy(card.getDamage());
-                if (opposingCard.getLife() <= 0) {
-                    playerRow.remove(slot);
-                }
-            }
-        });
+        table.getTableSlots()
+                .forEach(this::calculateOpponentDamagePerSlot);
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
-        return Optional.ofNullable(opponentRow.get(tableSlot));
+        return table.getOpponentCardAtSlot(tableSlot);
     }
 
     public int getOpponentLife() {
