@@ -7,9 +7,9 @@ import tags.GameTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@GameTest
 public class SacrificeRulesGameTest extends BaseGameTest {
     @Test
-    @GameTest
     @DisplayName("Should grant that a placed card is not in player hand after placed")
     void shouldGrantThatAPlacedCardIsNotInPlayerHandAfterPlaced() {
         Card card = sut.getHand().getFirst();
@@ -22,7 +22,6 @@ public class SacrificeRulesGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should remove a sacrificed card from the table after sacrificing")
     void shouldRemoveASacrificedCardFromTheTableAfterSacrificing() {
         Card card = Card.identity(Cost.ONE);
@@ -39,7 +38,6 @@ public class SacrificeRulesGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should throw IllegalSacrificeException if trying to sacrifice a card that isn't in table")
     void shouldThrowIllegalSacrificeExceptionIfTryingToSacrificeACardThatIsntInTable() {
         sut.select(0);
@@ -49,7 +47,6 @@ public class SacrificeRulesGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should throw IllegalSacrificeException when adding sacrifices to a zero cost card")
     void shouldThrowIllegalSacrificeExceptionWhenAddingSacrificesToAZeroCostCard() {
         Card zeroCostCard = Card.identity(Cost.ZERO);

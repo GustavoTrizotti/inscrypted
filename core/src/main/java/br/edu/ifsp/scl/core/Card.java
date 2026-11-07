@@ -26,6 +26,10 @@ public class Card {
         return sacrificeCost.getCost() - sacrifices == 0;
     }
 
+    boolean isDead() {
+        return life <= 0;
+    }
+
     void addSacrifice() {
         sacrifices++;
     }

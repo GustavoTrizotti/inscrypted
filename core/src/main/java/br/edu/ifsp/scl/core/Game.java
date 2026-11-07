@@ -125,7 +125,8 @@ public class Game {
 
         opposingCard.get().reduceLifeBy(attacker.getDamage());
 
-        if (opposingCard.get().getLife() > 0) return;
+        if (!opposingCard.get().isDead()) return;
+
         if (isCalculatingForOpponent) {
             table.removeCardAtSlot(slot);
             return;

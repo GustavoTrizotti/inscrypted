@@ -9,9 +9,9 @@ import tags.GameTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@GameTest
 public class PlacementRuleGameTest extends BaseGameTest {
     @ParameterizedTest(name = "For {0} table slot")
-    @GameTest
     @EnumSource(TableSlot.class)
     @DisplayName("Should throw NoCardSelectedException when trying to place the selected card before selecting in any slot")
     void shouldThrowNoCardSelectedExceptionWhenTryingToPlaceTheSelectedCardBeforeSelectingInAnySlot(TableSlot slot) {
@@ -21,7 +21,6 @@ public class PlacementRuleGameTest extends BaseGameTest {
     }
 
     @ParameterizedTest(name = "For {0} table slot")
-    @GameTest
     @EnumSource(TableSlot.class)
     @DisplayName("Should throw IllegalCardPlacementException if placing a card in an occupied table position")
     void shouldThrowIllegalCardPlacementExceptionIfPlacingACardInAnOccupiedTablePosition(TableSlot slot) {
@@ -39,7 +38,6 @@ public class PlacementRuleGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should throw UnsatisfiedSacrificeException when placing card without reaching sacrifice cost")
     void shouldThrowUnsatisfiedSacrificeExceptionWhenPlacingCardWithoutReachingSacrificeCost() {
         Card card = Card.identity(Cost.ONE);
@@ -51,7 +49,6 @@ public class PlacementRuleGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should allow place a card that covered its sacrifice cost in a free table position")
     void shouldAllowPlaceACardThatCoveredItsSacrificeCostInAFreeTablePosition() {
         Card card = Card.identity(Cost.ONE);

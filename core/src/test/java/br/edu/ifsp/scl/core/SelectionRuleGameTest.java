@@ -9,9 +9,9 @@ import tags.GameTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIndexOutOfBoundsException;
 
+@GameTest
 public class SelectionRuleGameTest extends BaseGameTest {
     @Test
-    @GameTest
     @DisplayName("Should mark a card as current selected card when selecting it")
     void shouldMarkACardAsCurrentSelectedCardWhenSelectingIt() {
         sut.select(0);
@@ -19,7 +19,6 @@ public class SelectionRuleGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should replace the previous card when selecting different card from previous")
     void shouldReplaceThePreviousCardWhenSelectingDifferentCardFromPrevious() {
         sut.select(0);
@@ -29,7 +28,6 @@ public class SelectionRuleGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should throw IndexOutOfBoundsException if player selects card from inalid index")
     void shouldThrowIndexOutOfBoundsExceptionIfPlayerSelectsCardFromInalidIndex() {
         assertThatIndexOutOfBoundsException()
@@ -37,7 +35,6 @@ public class SelectionRuleGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should allow place a card without cost to be place in any table position")
     void shouldAllowPlaceACardWithoutCostToBePlaceInAnyTablePosition() {
         Card squirrel = new Card("Squirrel", Cost.ZERO, 0, 0);
@@ -49,7 +46,6 @@ public class SelectionRuleGameTest extends BaseGameTest {
         assertThat(sut.getCardAtSlot(TableSlot.FIRST)).hasValue(squirrel);
     }
 
-    @GameTest
     @ParameterizedTest(name = "For cost \"{0}\"")
     @EnumSource(value = Cost.class, names = {"ZERO"}, mode = EnumSource.Mode.EXCLUDE)
     @DisplayName("Should prepare sacrifice mode when selecting card with one or more sacrifice cost")
@@ -64,7 +60,6 @@ public class SelectionRuleGameTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should cancel sacrifice mode when changing the selected card")
     void shouldCancelSacrificeModeWhenChangingTheSelectedCard() {
         Card squirrel = Card.createSquirrel();

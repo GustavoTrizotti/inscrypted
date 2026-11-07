@@ -6,8 +6,8 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SelectPackages({"br.edu.ifsp.scl.core"})
+@SelectPackages("br.edu.ifsp.scl.core")
 @SuiteDisplayName("All game rules")
-@IncludeTags({"game"})
+@IncludeTags("game")
 public class GameSuite {
 }

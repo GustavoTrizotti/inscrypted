@@ -7,9 +7,9 @@ import tags.GameTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
+@GameTest
 public class EmptyHandRuleGameTest {
     @Test
-    @GameTest
     @DisplayName("Should not allow the player to ring the bell before drawing the initial 5 cards")
     void shouldNotAllowThePlayerToRingTheBellBeforeDrawingTheInitial5Cards() {
         var hand = new Hand();

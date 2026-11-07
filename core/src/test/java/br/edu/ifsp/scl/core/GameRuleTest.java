@@ -10,9 +10,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@GameTest
 public class GameRuleTest extends BaseGameTest {
     @Test
-    @GameTest
     @DisplayName("Should grant that two opponent cards have been placed on table in game start")
     void shouldGrantThatTwoOpponentCardsHaveBeenPlacedOnTableInGameStart() {
         sut.placeInitialOpponentCards();
@@ -20,7 +20,6 @@ public class GameRuleTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should not allow the opponent to place a card in player row")
     void shouldNotAllowTheOpponentToPlaceACardInPlayerRow() {
         sut.placeInitialOpponentCards();
@@ -29,7 +28,6 @@ public class GameRuleTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should not allow the opponent to pick a squirrel to be placed in table")
     void shouldNotAllowTheOpponentToPickASquirrelToBePlacedInTable() {
         sut.placeInitialOpponentCards();
@@ -70,7 +68,6 @@ public class GameRuleTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should reduce card life after beign attacked by opposing card")
     void shouldReduceCardLifeAfterBeignAttackedByOpposingCard() {
         Card card = Card.identity(Cost.ZERO);
@@ -90,7 +87,6 @@ public class GameRuleTest extends BaseGameTest {
     }
 
     @Test
-    @GameTest
     @DisplayName("Should remove card that reached zero life points after ringing the bell")
     void shouldRemoveCardThatReachedZeroLifePointsAfterRingingTheBell() {
         Card card = Card.identity(Cost.ZERO);
