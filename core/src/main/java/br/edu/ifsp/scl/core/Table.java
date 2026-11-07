@@ -30,10 +30,6 @@ public final class Table {
         opponentRow.remove(slot);
     }
 
-    Set<TableSlot> getTableSlots() {
-        return Set.copyOf(playerRow.keySet());
-    }
-
     List<Card> getOpponentRow() {
         return List.copyOf(opponentRow.values());
     }

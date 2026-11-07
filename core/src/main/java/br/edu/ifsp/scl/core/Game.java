@@ -2,6 +2,7 @@ package br.edu.ifsp.scl.core;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class Game {
     private final Hand hand;
@@ -115,11 +116,13 @@ public class Game {
         }
 
         opposingCard.get().reduceLifeBy(attacker.getDamage());
+
         if (opposingCard.get().getLife() > 0) return;
         if (isCalculatingForOpponent) {
             table.removeCardAtSlot(slot);
             return;
         }
+
         table.removeOpponentCardAtSlot(slot);
     }
 
@@ -135,11 +138,10 @@ public class Game {
         if (hand.getCards().isEmpty())
             throw new IllegalStateException("Cannot ring the bell before game starts");
 
-        table.getTableSlots()
-                .forEach(this::calculatePlayerDamagePerSlot);
+        final Set<TableSlot> slots = TableSlot.set();
 
-        table.getTableSlots()
-                .forEach(this::calculateOpponentDamagePerSlot);
+        slots.forEach(this::calculatePlayerDamagePerSlot);
+        slots.forEach(this::calculateOpponentDamagePerSlot);
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
