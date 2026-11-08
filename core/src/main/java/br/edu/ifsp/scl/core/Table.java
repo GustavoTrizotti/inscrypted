@@ -3,40 +3,50 @@ package br.edu.ifsp.scl.core;
 import java.util.*;
 
 public final class Table {
-    private final Map<TableSlot, Card> playerRow = new HashMap<>();
-    private final Map<TableSlot, Card> opponentRow = new HashMap<>();
+    private final Map<Row, TableRow> rows = new HashMap<>();
 
-    Table() {}
+    Table() {
+        rows.put(Row.PLAYER, new TableRow());
+        rows.put(Row.OPPONENT, new TableRow());
+    }
 
     Optional<Card> getPlayerCardAtSlot(TableSlot slot) {
-        return Optional.ofNullable(playerRow.get(slot));
+        return playerRow().getCardAtSlot(slot);
     }
 
     Optional<Card> getOpponentCardAtSlot(TableSlot slot) {
-        return Optional.ofNullable(opponentRow.get(slot));
+        return opponentRow().getCardAtSlot(slot);
     }
 
     void insertCardAtSlot(TableSlot slot, Card card) {
-        playerRow.putIfAbsent(slot, card);
+        playerRow().insertCardAtSlot(slot, card);
     }
 
     void insertOpponentCardAtSlot(TableSlot slot, Card card) {
-        opponentRow.putIfAbsent(slot, card);
+        opponentRow().insertCardAtSlot(slot, card);
     }
 
     void removeCardAtSlot(TableSlot slot) {
-        playerRow.remove(slot);
+        playerRow().removeCardAtSlot(slot);
     }
 
     void removeOpponentCardAtSlot(TableSlot slot) {
-        opponentRow.remove(slot);
+        opponentRow().removeCardAtSlot(slot);
     }
 
-    List<Card> getOpponentRow() {
-        return List.copyOf(opponentRow.values());
+    List<Card> getOpponentCards() {
+        return List.copyOf(opponentRow().cards());
     }
 
-    List<Card> getPlayerRow() {
-        return List.copyOf(playerRow.values());
+    List<Card> getPlayerCards() {
+        return List.copyOf(playerRow().cards());
+    }
+
+    TableRow playerRow() {
+        return rows.get(Row.PLAYER);
+    }
+
+    TableRow opponentRow() {
+        return rows.get(Row.OPPONENT);
     }
 }

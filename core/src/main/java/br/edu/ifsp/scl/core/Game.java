@@ -2,7 +2,6 @@ package br.edu.ifsp.scl.core;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class Game {
     private final Hand hand;
@@ -93,64 +92,30 @@ public class Game {
     }
 
     public List<Card> getOpponentRow() {
-        return table.getOpponentRow();
+        return table.getOpponentCards();
     }
 
     public List<Card> getPlayerRow() {
-        return table.getPlayerRow();
-    }
-
-    private void calculateDamagePerSlot(TableSlot slot, boolean isCalculatingForOpponent) {
-        var attackingCard = table.getPlayerCardAtSlot(slot);
-        var opposingCard = table.getOpponentCardAtSlot(slot);
-
-        if (isCalculatingForOpponent) {
-            attackingCard = table.getOpponentCardAtSlot(slot);
-            opposingCard = table.getPlayerCardAtSlot(slot);
-        }
-
-        if (attackingCard.isEmpty()) return;
-
-        final Card attacker = attackingCard.get();
-
-        if (opposingCard.isEmpty() && isCalculatingForOpponent) {
-            playerLife -= attacker.getDamage();
-            return;
-        }
-
-        if (opposingCard.isEmpty()) {
-            opponentLife -= attacker.getDamage();
-            return;
-        }
-
-        opposingCard.get().reduceLifeBy(attacker.getDamage());
-
-        if (!opposingCard.get().isDead()) return;
-
-        if (isCalculatingForOpponent) {
-            table.removeCardAtSlot(slot);
-            return;
-        }
-
-        table.removeOpponentCardAtSlot(slot);
-    }
-
-    private void calculatePlayerDamagePerSlot(TableSlot slot) {
-        calculateDamagePerSlot(slot, false);
-    }
-
-    private void calculateOpponentDamagePerSlot(TableSlot slot) {
-        calculateDamagePerSlot(slot, true);
+        return table.getPlayerCards();
     }
 
     public void ringBell() {
         if (hand.getCards().isEmpty())
             throw new IllegalStateException("Cannot ring the bell before game starts");
 
-        final Set<TableSlot> slots = TableSlot.set();
+        var gameRound = new Round(table);
 
-        slots.forEach(this::calculatePlayerDamagePerSlot);
-        slots.forEach(this::calculateOpponentDamagePerSlot);
+        var playerRowResult = gameRound.calculateResultFromPlayerRow();
+        playerRowResult.slotsToEliminate()
+                .forEach(table.opponentRow()::removeCardAtSlot);
+
+        opponentLife -= playerRowResult.directDamage();
+
+        var opponentRowResult = gameRound.calculateResultFromOpponentRow();
+        opponentRowResult.slotsToEliminate()
+                .forEach(table.playerRow()::removeCardAtSlot);
+
+        playerLife -= opponentRowResult.directDamage();
     }
 
     public Optional<Card> getOpponentCardAtSlot(TableSlot tableSlot) {
